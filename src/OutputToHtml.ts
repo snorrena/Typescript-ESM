@@ -27,12 +27,14 @@ export function generateHTML() {
   let last_name_container = document.createElement("div");
   let remove_button_container = document.createElement("div");
 
-  const data_containers = [id_container,first_name_container,last_name_container,remove_button_container];
-  for(let container of data_containers){
+  const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
+  for (let container of data_containers) {
     container.style.display = "flex";
     container.style.flexDirection = "column";
     container.style.justifyContent = "space-between";
   }
+
+  let current_id_number = 0;
 
   function updateUserDataDiv() {
 
@@ -44,6 +46,8 @@ export function generateHTML() {
     //this foreach loop passes each item in the data array to an arrow function
     dataArray.forEach((user) => {
 
+      current_id_number = user.id;
+
       //here we create containers for each data item in the user object
       let id_div = document.createElement("div");
       let first_name_div = document.createElement("div");
@@ -51,10 +55,10 @@ export function generateHTML() {
       let remove_button_div = document.createElement("div");
 
       const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
-      for(let data_div of data_divs){
+      for (let data_div of data_divs) {
         data_div.style.marginBottom = "5px";
       }
-    
+
       let remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
       remove_button.addEventListener("click", () => {
@@ -102,7 +106,6 @@ export function generateHTML() {
 
   updateUserDataDiv();
 
-
   const add_new_user_h2 = document.createElement("h2");
   add_new_user_h2.innerText = "Add a new user";
   add_new_user_h2.style.textDecoration = "underline";
@@ -125,7 +128,7 @@ export function generateHTML() {
   const id_input = document.createElement("input");
   id_input.type = "number";
   id_input.id = "id_input_id";
-  id_input.value = (dataArray.length + 1).toString();
+  id_input.value = (current_id_number + 1).toString();
   id_input.disabled = true;
   const first_name_input = document.createElement("input");
   first_name_input.setAttribute("type", "string");
@@ -179,10 +182,15 @@ export function generateHTML() {
   button.innerText = "Add User";
   button_div.appendChild(button);
   button.addEventListener("click", add_new_user);
+  document.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      add_new_user();
+    }
+  })
   body.appendChild(button_div);
 
   function add_new_user() {
-    let id = (dataArray.length + 1);
+    let id = ++current_id_number;
     let first_name = first_name_input.value;
     let last_name = last_name_input.value;
     if (first_name != "" && last_name != "") {
@@ -193,7 +201,7 @@ export function generateHTML() {
       }
       first_name_input.value = "";
       last_name_input.value = "";
-      id_input.value = (dataArray.length + 2).toString();
+      id_input.value = (id + 1).toString();
       dataArray.push(new_user);
       updateUserDataDiv();
 

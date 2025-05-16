@@ -23,12 +23,14 @@ export function generateHTML() {
         container.style.flexDirection = "column";
         container.style.justifyContent = "space-between";
     }
+    let current_id_number = 0;
     function updateUserDataDiv() {
         id_container.innerHTML = "";
         first_name_container.innerHTML = "";
         last_name_container.innerHTML = "";
         remove_button_container.innerHTML = "";
         dataArray.forEach((user) => {
+            current_id_number = user.id;
             let id_div = document.createElement("div");
             let first_name_div = document.createElement("div");
             let last_name_div = document.createElement("div");
@@ -85,7 +87,7 @@ export function generateHTML() {
     const id_input = document.createElement("input");
     id_input.type = "number";
     id_input.id = "id_input_id";
-    id_input.value = (dataArray.length + 1).toString();
+    id_input.value = (current_id_number + 1).toString();
     id_input.disabled = true;
     const first_name_input = document.createElement("input");
     first_name_input.setAttribute("type", "string");
@@ -132,9 +134,14 @@ export function generateHTML() {
     button.innerText = "Add User";
     button_div.appendChild(button);
     button.addEventListener("click", add_new_user);
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            add_new_user();
+        }
+    });
     body.appendChild(button_div);
     function add_new_user() {
-        let id = (dataArray.length + 1);
+        let id = ++current_id_number;
         let first_name = first_name_input.value;
         let last_name = last_name_input.value;
         if (first_name != "" && last_name != "") {
@@ -145,7 +152,7 @@ export function generateHTML() {
             };
             first_name_input.value = "";
             last_name_input.value = "";
-            id_input.value = (dataArray.length + 2).toString();
+            id_input.value = (id + 1).toString();
             dataArray.push(new_user);
             updateUserDataDiv();
         }

@@ -1,0 +1,19 @@
+{
+  "name": "deno-test",
+  "version": "1.0.0",
+  "main": "importPathUpdate.js",
+  "type":"module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc || exit 0;",
+    "importPathUpdate": "node importPathUpdate.js",
+    "nodeRun": "node ./src/index.ts",
+    "denoRun": "deno run ./src/index.ts",
+    "serverRun": "live-server",
+    "server": "npm run rmdir -- dist && npm run build && npm run importPathUpdate && npm run serverRun",
+    "rmdir": "node -e \"var fs = require('fs'); try{process.argv.slice(1).map((fpath) => fs.rmdirSync(fpath, { recursive: true }))}catch(err){console.log(`Dist not found`)}; process.exit(0);\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

@@ -1,7 +1,6 @@
 import { outputUserData as displayDataInDevConsole } from "./DisplayData.ts"
 import { generateHTML } from "./OutputToHtml.ts"
 
-
 //only generate the html if the runtime is a browser
 if (typeof window === "object") {
 

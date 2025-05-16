@@ -10,7 +10,7 @@
     "nodeRun": "node ./src/index.ts",
     "denoRun": "deno run ./src/index.ts",
     "serverRun": "live-server",
-    "server": "npm run rmdir -- dist && npm run build && npm run importPathUpdate && npm run serverRun",
+    "server": "pnpm run rmdir -- dist && pnpm run build && pnpm run importPathUpdate && pnpm run serverRun",
     "rmdir": "node -e \"var fs = require('fs'); try{process.argv.slice(1).map((fpath) => fs.rmdirSync(fpath, { recursive: true }))}catch(err){console.log(`Dist not found`)}; process.exit(0);\""
   },
   "author": "",

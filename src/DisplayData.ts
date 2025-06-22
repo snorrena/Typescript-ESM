@@ -28,8 +28,8 @@ export function outputUserData(): void {
   console.log()
   const userNameArray: UserName[] = getData();
   for (let i = 0; i < userNameArray.length; i++) {
-    console.log(`firstName:${userNameArray[i].firstName}`)
     console.log(`id:${userNameArray[i].id}`)
+    console.log(`firstName:${userNameArray[i].firstName}`)
     console.log(`lastName:${userNameArray[i].lastName}`)
     if (i < userNameArray.length - 1) {
       console.log(" - ")

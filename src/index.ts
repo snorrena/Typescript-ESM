@@ -5,6 +5,7 @@ import { generateHTML } from "./OutputToHtml.ts"
 if (typeof window === "object") {
 
   generateHTML();
+  document.getElementById("first_name_input_id")?.focus();
 
 } else {
 

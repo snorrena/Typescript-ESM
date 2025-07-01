@@ -2,6 +2,7 @@ import { dataArray } from "./DisplayData.js";
 export function generateHTML() {
     const body = document.body;
     const heading = document.createElement("h1");
+    let lastUserAddedIndex;
     heading.innerHTML = "User Array Content";
     heading.style.textDecoration = "underline";
     body.appendChild(heading);
@@ -38,6 +39,12 @@ export function generateHTML() {
             const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
             for (let data_div of data_divs) {
                 data_div.style.marginBottom = "5px";
+                const isLastItem = data_divs.indexOf(data_div) === data_divs.length - 1;
+                if (lastUserAddedIndex != null && !isLastItem) {
+                    if (lastUserAddedIndex === user.id) {
+                        data_div.style.backgroundColor = "yellow";
+                    }
+                }
             }
             let remove_button = document.createElement("button");
             remove_button.innerText = "Remove";
@@ -142,6 +149,7 @@ export function generateHTML() {
     body.appendChild(button_div);
     function add_new_user() {
         let id = ++current_id_number;
+        lastUserAddedIndex = id;
         let first_name = first_name_input.value;
         let last_name = last_name_input.value;
         if (first_name != "" && last_name != "") {

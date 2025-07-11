@@ -11,6 +11,7 @@ export function generateHTML() {
   heading.style.textDecoration = "underline";
   body.appendChild(heading);
 
+  //create the main div to contain all user data elements
   const user_data_div = document.createElement("div");
   user_data_div.id = "user_data_div_id";
   body.appendChild(user_data_div);
@@ -22,12 +23,16 @@ export function generateHTML() {
   container.style.justifyContent = "space-between";
   container.style.width = "25%";
 
-  //these container will hold the array data
+  //these containers will hold the array data fields of id, first name and last name
   let id_container = document.createElement("div");
   let first_name_container = document.createElement("div");
   let last_name_container = document.createElement("div");
+
+  //this container will  hold the remove buttons for each user line item
   let remove_button_container = document.createElement("div");
 
+  //each data container is set as flex row with the data itemms evenly spaced between
+  //the data containers are added to an array to add the required style attributs to all via a for loop
   const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
   for (let container of data_containers) {
     container.style.display = "flex";
@@ -35,10 +40,12 @@ export function generateHTML() {
     container.style.justifyContent = "space-between";
   }
 
+  //initialize and set the current user index #
   let current_id_number = 0;
 
   function updateUserDataDiv() {
 
+    //clear the data containers to avoid duplicate data when adding a new user
     id_container.innerHTML = "";
     first_name_container.innerHTML = "";
     last_name_container.innerHTML = "";
@@ -55,6 +62,8 @@ export function generateHTML() {
       let last_name_div = document.createElement("div");
       let remove_button_div = document.createElement("div");
 
+      //added the data divs to an array. Iterate over the array to add a margin bottom to each
+      //and highlight an last added user with a yellow background colour
       const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
       for (let data_div of data_divs) {
         data_div.style.marginBottom = "5px";
@@ -66,6 +75,7 @@ export function generateHTML() {
         }
       }
 
+      //create a remove button and add an event listener to remove the current user on click
       let remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
       remove_button.addEventListener("click", () => {
@@ -96,14 +106,15 @@ export function generateHTML() {
 
     });
 
-    //this array will store each data container element including the array data
+    //this array will store each data container elements including the array data
     let dataItemsArray: HTMLElement[] = [];
+
     //the container are pushed onto an array
     dataItemsArray.push(id_container, first_name_container, last_name_container, remove_button_container);
 
     //iterate over the elements array and append all to the master container div
-    for (let element of dataItemsArray) {
-      container.appendChild(element);
+    for (let userDataContainer of dataItemsArray) {
+      container.appendChild(userDataContainer);
     }
 
     //append the container div to the html document body
@@ -111,11 +122,15 @@ export function generateHTML() {
 
   };
 
+  //this is the call of the function defined above
   updateUserDataDiv();
 
+  //create a heading for the add new user form
   const add_new_user_h2 = document.createElement("h2");
   add_new_user_h2.innerText = "Add a new user";
   add_new_user_h2.style.textDecoration = "underline";
+
+  //create a div to contain the add new user form
   const add_new_user_div = document.createElement("div");
   add_new_user_div.style.width = "25%";
   add_new_user_div.style.marginTop = "20px";
@@ -124,6 +139,7 @@ export function generateHTML() {
 
   body.appendChild(add_new_user_div);
 
+  //create a div to contains the input fields of our add user form
   const inputs_container = document.createElement("div")
   inputs_container.style.display = "flex";
   inputs_container.style.flexDirection = "column";
@@ -132,11 +148,13 @@ export function generateHTML() {
   inputs_container.style.width = "25%";
   inputs_container.style.marginTop = "10px";
 
+  //create the id input field and set to disable as this field will be auto incremented
   const id_input = document.createElement("input");
   id_input.type = "number";
   id_input.id = "id_input_id";
   id_input.value = (current_id_number + 1).toString();
   id_input.disabled = true;
+
   const first_name_input = document.createElement("input");
   first_name_input.setAttribute("type", "string");
   first_name_input.id = "first_name_input_id";
@@ -168,6 +186,7 @@ export function generateHTML() {
 
   id_div.appendChild(id_label);
   id_div.appendChild(id_input);
+
   first_name_div.appendChild(first_name_label);
   first_name_div.appendChild(first_name_input);
   last_name_div.appendChild(last_name_label);

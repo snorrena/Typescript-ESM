@@ -5,7 +5,6 @@ export function generateHTML() {
     const heading = document.createElement("h1");
     let lastUserAddedIndex;
     heading.innerHTML = "User Data";
-    heading.style.textDecoration = "underline";
     body.appendChild(heading);
     const user_data_div = document.createElement("div");
     user_data_div.id = "user_data_div_id";
@@ -15,6 +14,8 @@ export function generateHTML() {
     container.style.flexDirection = "row";
     container.style.justifyContent = "space-between";
     container.style.width = "26%";
+    container.style.border = "1px solid black";
+    container.style.padding = "10px";
     let id_container = document.createElement("div");
     let first_name_container = document.createElement("div");
     let last_name_container = document.createElement("div");
@@ -40,7 +41,9 @@ export function generateHTML() {
             let remove_button_div = document.createElement("div");
             const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
             for (let data_div of data_divs) {
-                data_div.style.marginBottom = "5px";
+                data_div.style.display = "flex";
+                data_div.style.alignItems = "center";
+                data_div.style.height = "50px";
                 const isLastItem = data_divs.indexOf(data_div) === data_divs.length - 1;
                 if (lastUserAddedIndex != null && !isLastItem) {
                     if (lastUserAddedIndex === user.id) {
@@ -78,22 +81,23 @@ export function generateHTML() {
     }
     ;
     updateUserDataDiv();
-    const add_new_user_h2 = document.createElement("h2");
-    add_new_user_h2.innerText = "Add a new user";
-    add_new_user_h2.style.textDecoration = "underline";
+    const add_new_user_h1 = document.createElement("h1");
+    add_new_user_h1.innerText = "Add a new user";
     const add_new_user_div = document.createElement("div");
-    add_new_user_div.style.width = "25%";
-    add_new_user_div.style.marginTop = "20px";
-    add_new_user_div.style.textAlign = "center";
-    add_new_user_div.appendChild(add_new_user_h2);
+    add_new_user_div.style.width = "15%";
+    add_new_user_div.style.marginTop = "40px";
+    add_new_user_div.style.textAlign = "left";
+    add_new_user_div.appendChild(add_new_user_h1);
     body.appendChild(add_new_user_div);
     const inputs_container = document.createElement("div");
     inputs_container.style.display = "flex";
     inputs_container.style.flexDirection = "column";
     inputs_container.style.alignItems = "left";
     inputs_container.style.justifyContent = "center";
-    inputs_container.style.width = "26%";
+    inputs_container.style.width = "15%";
     inputs_container.style.marginTop = "10px";
+    inputs_container.style.border = "1px solid black";
+    inputs_container.style.padding = "10px";
     const id_input = document.createElement("input");
     id_input.type = "number";
     id_input.id = "id_input_id";
@@ -121,10 +125,17 @@ export function generateHTML() {
     last_name_label.style.display = "inline-block";
     last_name_label.style.width = "100px";
     const id_div = document.createElement("div");
-    id_div.style.marginBottom = "5px";
+    id_div.style.display = "flex";
+    id_div.style.alignItems = "center";
+    id_div.style.height = "40px";
     const first_name_div = document.createElement("div");
-    first_name_div.style.marginBottom = "5px";
+    first_name_div.style.display = "flex";
+    first_name_div.style.alignItems = "center";
+    first_name_div.style.height = "40px";
     const last_name_div = document.createElement("div");
+    last_name_div.style.display = "flex";
+    last_name_div.style.alignItems = "center";
+    last_name_div.style.height = "40px";
     id_div.appendChild(id_label);
     id_div.appendChild(id_input);
     first_name_div.appendChild(first_name_label);

@@ -237,6 +237,7 @@ export function generateHTML() {
         firstName: first_name,
         lastName: last_name
       }
+      dataArray.push(new_user);
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
@@ -246,7 +247,6 @@ export function generateHTML() {
         nextUserId = highestIdNumberInUserArray() + 1;
       }
       id_input.value = nextUserId.toString();
-      dataArray.push(new_user);
       updateUserDataDiv();
 
     }

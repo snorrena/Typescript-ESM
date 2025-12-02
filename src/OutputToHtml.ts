@@ -162,6 +162,7 @@ export function generateHTML() {
   const add_new_user_div = document.createElement("div");
   add_new_user_div.style.width = "15%";
   add_new_user_div.style.marginTop = "40px";
+  add_new_user_div.style.marginLeft = "10px";
   add_new_user_div.style.textAlign = "left";
   add_new_user_div.appendChild(add_new_user_h1);
 
@@ -175,8 +176,7 @@ export function generateHTML() {
   inputs_container.style.justifyContent = "center";
   inputs_container.style.width = "15%";
   inputs_container.style.marginTop = "10px";
-  inputs_container.style.border = "1px solid black";
-  inputs_container.style.padding = "10px";
+  inputs_container.style.marginLeft = "10px";
 
   //create the id input field and set to disable as this field will be auto incremented
   const id_input = document.createElement("input");
@@ -184,29 +184,35 @@ export function generateHTML() {
   id_input.id = "id_input_id";
   id_input.value = (current_id_number + 1).toString();
   id_input.disabled = true;
+  id_input.style.width = "50%"
 
   const first_name_input = document.createElement("input");
   first_name_input.setAttribute("type", "string");
   first_name_input.id = "first_name_input_id";
+  first_name_input.style.width = "50%"
+
   const last_name_input = document.createElement("input");
   last_name_input.setAttribute("type", "string");
   last_name_input.id = "last_name_input_id";
+  last_name_input.style.width = "50%";
 
   const id_label = document.createElement("label");
   id_label.setAttribute("for", "id_input_id");
   id_label.textContent = "Id:";
   id_label.style.display = "inline-block";
-  id_label.style.width = "100px";
+  id_label.style.width = "50%";
+
   const first_name_label = document.createElement("label");
   first_name_label.setAttribute("for", "first_name_input_id");
   first_name_label.textContent = "First name:";
   first_name_label.style.display = "inline-block";
-  first_name_label.style.width = "100px";
+  first_name_label.style.width = "50%";
+
   const last_name_label = document.createElement("label");
   last_name_label.setAttribute("for", "last_name_input_id");
   last_name_label.textContent = "Last name:";
   last_name_label.style.display = "inline-block";
-  last_name_label.style.width = "100px";
+  last_name_label.style.width = "50%";
 
   const id_div = document.createElement("div");
   id_div.style.display = "flex";
@@ -238,10 +244,11 @@ export function generateHTML() {
   body.appendChild(inputs_container);
 
   const button_div = document.createElement("div");
-  button_div.style.marginTop = "10px";
-  button_div.style.width = "25%";
+  button_div.style.marginTop = "20px";
+  button_div.style.marginLeft = "10px";
+  button_div.style.width = "15%";
   button_div.style.display = "flex";
-  button_div.style.justifyContent = "center";
+  button_div.style.justifyContent = "right";
 
   const button = document.createElement("button");
   button.innerText = "Add User";

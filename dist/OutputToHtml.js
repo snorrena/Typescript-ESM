@@ -4,7 +4,7 @@ export function generateHTML() {
     const body = document.body;
     const heading = document.createElement("h1");
     let lastUserAddedIndex;
-    heading.innerHTML = "User Array Content";
+    heading.innerHTML = "User Data";
     heading.style.textDecoration = "underline";
     body.appendChild(heading);
     const user_data_div = document.createElement("div");
@@ -14,7 +14,7 @@ export function generateHTML() {
     container.style.display = "flex";
     container.style.flexDirection = "row";
     container.style.justifyContent = "space-between";
-    container.style.width = "25%";
+    container.style.width = "26%";
     let id_container = document.createElement("div");
     let first_name_container = document.createElement("div");
     let last_name_container = document.createElement("div");
@@ -56,9 +56,9 @@ export function generateHTML() {
             id_div.style.textAlign = "left";
             first_name_div.style.textAlign = "left";
             last_name_div.style.textAlign = "left";
-            let id_text = document.createTextNode(`id: ${user.id}`);
-            let first_name_text = document.createTextNode(`first name: ${user.firstName}`);
-            let last_name_text = document.createTextNode(`last name: ${user.lastName}`);
+            let id_text = document.createTextNode(`Id:  ${user.id}`);
+            let first_name_text = document.createTextNode(`First name:  ${user.firstName}`);
+            let last_name_text = document.createTextNode(`Last name:  ${user.lastName}`);
             id_div.appendChild(id_text);
             first_name_div.appendChild(first_name_text);
             last_name_div.appendChild(last_name_text);
@@ -74,6 +74,7 @@ export function generateHTML() {
             container.appendChild(userDataContainer);
         }
         user_data_div.appendChild(container);
+        setCursorFocus();
     }
     ;
     updateUserDataDiv();
@@ -91,7 +92,7 @@ export function generateHTML() {
     inputs_container.style.flexDirection = "column";
     inputs_container.style.alignItems = "left";
     inputs_container.style.justifyContent = "center";
-    inputs_container.style.width = "25%";
+    inputs_container.style.width = "26%";
     inputs_container.style.marginTop = "10px";
     const id_input = document.createElement("input");
     id_input.type = "number";
@@ -111,12 +112,12 @@ export function generateHTML() {
     id_label.style.width = "100px";
     const first_name_label = document.createElement("label");
     first_name_label.setAttribute("for", "first_name_input_id");
-    first_name_label.textContent = "First Name:";
+    first_name_label.textContent = "First name:";
     first_name_label.style.display = "inline-block";
     first_name_label.style.width = "100px";
     const last_name_label = document.createElement("label");
     last_name_label.setAttribute("for", "last_name_input_id");
-    last_name_label.textContent = "Last Name:";
+    last_name_label.textContent = "Last name:";
     last_name_label.style.display = "inline-block";
     last_name_label.style.width = "100px";
     const id_div = document.createElement("div");
@@ -196,6 +197,10 @@ export function generateHTML() {
         if (availableId.length > 1) {
             availableId.sort((a, b) => a - b);
         }
+    }
+    function setCursorFocus() {
+        var _a;
+        (_a = document.getElementById("first_name_input_id")) === null || _a === void 0 ? void 0 : _a.focus();
     }
 }
 ;

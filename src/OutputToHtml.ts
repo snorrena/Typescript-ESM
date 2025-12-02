@@ -9,7 +9,7 @@ export function generateHTML() {
   const body = document.body;
   const heading = document.createElement("h1");
   let lastUserAddedIndex: number;
-  heading.innerHTML = "User Array Content"
+  heading.innerHTML = "User Data";
   heading.style.textDecoration = "underline";
   body.appendChild(heading);
 
@@ -23,7 +23,7 @@ export function generateHTML() {
   container.style.display = "flex";
   container.style.flexDirection = "row";
   container.style.justifyContent = "space-between";
-  container.style.width = "25%";
+  container.style.width = "26%";
 
   //these containers will hold the array data fields of id, first name and last name
   let id_container = document.createElement("div");
@@ -83,7 +83,7 @@ export function generateHTML() {
           if (lastUserAddedIndex === user.id) {
 
             data_div.style.backgroundColor = "yellow";
-            
+
           }
 
         }
@@ -106,9 +106,9 @@ export function generateHTML() {
       last_name_div.style.textAlign = "left";
 
       //interpolation is used here to create text nodes including the user object data items
-      let id_text = document.createTextNode(`id: ${user.id}`)
-      let first_name_text = document.createTextNode(`first name: ${user.firstName}`)
-      let last_name_text = document.createTextNode(`last name: ${user.lastName}`)
+      let id_text = document.createTextNode(`Id:  ${user.id}`)
+      let first_name_text = document.createTextNode(`First name:  ${user.firstName}`)
+      let last_name_text = document.createTextNode(`Last name:  ${user.lastName}`)
 
       //the text nodes are then added into the container divs
       id_div.appendChild(id_text);
@@ -140,6 +140,8 @@ export function generateHTML() {
     //append the container div to the html document body
     user_data_div.appendChild(container);
 
+    setCursorFocus();
+
   };
 
   //this is the call of the function defined above
@@ -165,7 +167,7 @@ export function generateHTML() {
   inputs_container.style.flexDirection = "column";
   inputs_container.style.alignItems = "left";
   inputs_container.style.justifyContent = "center";
-  inputs_container.style.width = "25%";
+  inputs_container.style.width = "26%";
   inputs_container.style.marginTop = "10px";
 
   //create the id input field and set to disable as this field will be auto incremented
@@ -189,12 +191,12 @@ export function generateHTML() {
   id_label.style.width = "100px";
   const first_name_label = document.createElement("label");
   first_name_label.setAttribute("for", "first_name_input_id");
-  first_name_label.textContent = "First Name:";
+  first_name_label.textContent = "First name:";
   first_name_label.style.display = "inline-block";
   first_name_label.style.width = "100px";
   const last_name_label = document.createElement("label");
   last_name_label.setAttribute("for", "last_name_input_id");
-  last_name_label.textContent = "Last Name:";
+  last_name_label.textContent = "Last name:";
   last_name_label.style.display = "inline-block";
   last_name_label.style.width = "100px";
 
@@ -238,7 +240,7 @@ export function generateHTML() {
     }
 
   });
-  
+
   body.appendChild(button_div);
 
   function add_new_user() {
@@ -317,6 +319,10 @@ export function generateHTML() {
 
     }
 
+  }
+
+  function setCursorFocus() {
+    document.getElementById("first_name_input_id")?.focus();
   }
 
 };

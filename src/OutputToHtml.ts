@@ -3,6 +3,8 @@ import type UserData from "./Types.ts";
 
 export function generateHTML() {
 
+  const availableId:number[] = [];
+
   //get the body element and add an underlined heading
   const body = document.body;
   const heading = document.createElement("h1");
@@ -50,6 +52,8 @@ export function generateHTML() {
     first_name_container.innerHTML = "";
     last_name_container.innerHTML = "";
     remove_button_container.innerHTML = "";
+
+    dataArray.sort((a,b) => a.id - b.id);
 
     //this foreach loop passes each item in the data array to an arrow function
     dataArray.forEach((user) => {
@@ -216,7 +220,14 @@ export function generateHTML() {
   body.appendChild(button_div);
 
   function add_new_user() {
-    let id = ++current_id_number;
+    let id:number = current_id_number;
+    if(availableId.length != 0){
+      sortAvailableIdAscending();
+      id = availableId.shift() as number;
+    }else{
+
+    id = ++current_id_number;
+    }
     lastUserAddedIndex = id;
     let first_name = first_name_input.value;
     let last_name = last_name_input.value;
@@ -228,18 +239,39 @@ export function generateHTML() {
       }
       first_name_input.value = "";
       last_name_input.value = "";
-      id_input.value = (id + 1).toString();
+      let nextUserId = 0;
+      if(availableId.length != 0){
+        nextUserId = availableId[0];
+      }else{
+        nextUserId = highestIdNumberInUserArray() + 1;
+      }
+      id_input.value = nextUserId.toString();
       dataArray.push(new_user);
       updateUserDataDiv();
 
     }
   }
 
+  function highestIdNumberInUserArray():number{
+    dataArray.sort((a,b)=> a.id - b.id);
+    return dataArray[dataArray.length-1].id;
+  }
+
   function removeUser(userToBeRemoved: UserData) {
+
+    availableId.push(userToBeRemoved.id);
+    sortAvailableIdAscending();
+    id_input.value = availableId[0].toString();
 
     dataArray.splice(dataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
     updateUserDataDiv();
 
+  }
+  function sortAvailableIdAscending(){
+
+      if(availableId.length > 1){
+      availableId.sort((a, b) => a - b);
+      }
   }
 
 };

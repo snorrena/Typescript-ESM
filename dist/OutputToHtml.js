@@ -1,5 +1,6 @@
 import { dataArray } from "./DisplayData.js";
 export function generateHTML() {
+    const availableId = [];
     const body = document.body;
     const heading = document.createElement("h1");
     let lastUserAddedIndex;
@@ -30,6 +31,7 @@ export function generateHTML() {
         first_name_container.innerHTML = "";
         last_name_container.innerHTML = "";
         remove_button_container.innerHTML = "";
+        dataArray.sort((a, b) => a.id - b.id);
         dataArray.forEach((user) => {
             current_id_number = user.id;
             let id_div = document.createElement("div");
@@ -68,8 +70,8 @@ export function generateHTML() {
         });
         let dataItemsArray = [];
         dataItemsArray.push(id_container, first_name_container, last_name_container, remove_button_container);
-        for (let element of dataItemsArray) {
-            container.appendChild(element);
+        for (let userDataContainer of dataItemsArray) {
+            container.appendChild(userDataContainer);
         }
         user_data_div.appendChild(container);
     }
@@ -148,7 +150,14 @@ export function generateHTML() {
     });
     body.appendChild(button_div);
     function add_new_user() {
-        let id = ++current_id_number;
+        let id = current_id_number;
+        if (availableId.length != 0) {
+            sortAvailableIdAscending();
+            id = availableId.shift();
+        }
+        else {
+            id = ++current_id_number;
+        }
         lastUserAddedIndex = id;
         let first_name = first_name_input.value;
         let last_name = last_name_input.value;
@@ -160,14 +169,33 @@ export function generateHTML() {
             };
             first_name_input.value = "";
             last_name_input.value = "";
-            id_input.value = (id + 1).toString();
+            let nextUserId = 0;
+            if (availableId.length != 0) {
+                nextUserId = availableId[0];
+            }
+            else {
+                nextUserId = highestIdNumberInUserArray() + 1;
+            }
+            id_input.value = nextUserId.toString();
             dataArray.push(new_user);
             updateUserDataDiv();
         }
     }
+    function highestIdNumberInUserArray() {
+        dataArray.sort((a, b) => a.id - b.id);
+        return dataArray[dataArray.length - 1].id;
+    }
     function removeUser(userToBeRemoved) {
+        availableId.push(userToBeRemoved.id);
+        sortAvailableIdAscending();
+        id_input.value = availableId[0].toString();
         dataArray.splice(dataArray.findIndex(user => user.id === userToBeRemoved.id), 1);
         updateUserDataDiv();
+    }
+    function sortAvailableIdAscending() {
+        if (availableId.length > 1) {
+            availableId.sort((a, b) => a - b);
+        }
     }
 }
 ;

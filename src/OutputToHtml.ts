@@ -3,7 +3,7 @@ import type UserData from "./Types.ts";
 
 export function generateHTML() {
 
-  const availableId:number[] = [];
+  const availableId: number[] = [];
 
   //get the body element and add an underlined heading
   const body = document.body;
@@ -36,10 +36,13 @@ export function generateHTML() {
   //each data container is set as flex row with the data itemms evenly spaced between
   //the data containers are added to an array to add the required style attributs to all via a for loop
   const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
+
   for (let container of data_containers) {
+
     container.style.display = "flex";
     container.style.flexDirection = "column";
     container.style.justifyContent = "space-between";
+
   }
 
   //initialize and set the current user index #
@@ -53,7 +56,7 @@ export function generateHTML() {
     last_name_container.innerHTML = "";
     remove_button_container.innerHTML = "";
 
-    dataArray.sort((a,b) => a.id - b.id);
+    dataArray.sort((a, b) => a.id - b.id);
 
     //this foreach loop passes each item in the data array to an arrow function
     dataArray.forEach((user) => {
@@ -69,21 +72,32 @@ export function generateHTML() {
       //added the data divs to an array. Iterate over the array to add a margin bottom to each
       //and highlight an last added user with a yellow background colour
       const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
+
       for (let data_div of data_divs) {
+
         data_div.style.marginBottom = "5px";
         const isLastItem = data_divs.indexOf(data_div) === data_divs.length - 1;
-        if(lastUserAddedIndex != null && !isLastItem){
-          if(lastUserAddedIndex === user.id){
+
+        if (lastUserAddedIndex != null && !isLastItem) {
+
+          if (lastUserAddedIndex === user.id) {
+
             data_div.style.backgroundColor = "yellow";
+            
           }
+
         }
+
       }
 
       //create a remove button and add an event listener to remove the current user on click
       let remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
+
       remove_button.addEventListener("click", () => {
+
         removeUser(user);
+
       });
 
       //the text data style is set to align left 
@@ -118,7 +132,9 @@ export function generateHTML() {
 
     //iterate over the elements array and append all to the master container div
     for (let userDataContainer of dataItemsArray) {
+
       container.appendChild(userDataContainer);
+
     }
 
     //append the container div to the html document body
@@ -212,49 +228,75 @@ export function generateHTML() {
   button.innerText = "Add User";
   button_div.appendChild(button);
   button.addEventListener("click", add_new_user);
+
   document.addEventListener("keydown", function(event) {
+
     if (event.key === "Enter") {
+
       add_new_user();
+
     }
-  })
+
+  });
+  
   body.appendChild(button_div);
 
   function add_new_user() {
-    let id:number = current_id_number;
-    if(availableId.length != 0){
+
+    let id: number = current_id_number;
+
+    if (availableId.length != 0) {
+
       sortAvailableIdAscending();
       id = availableId.shift() as number;
-    }else{
 
-    id = ++current_id_number;
+    } else {
+
+      id = ++current_id_number;
+
     }
+
     lastUserAddedIndex = id;
     let first_name = first_name_input.value;
     let last_name = last_name_input.value;
+
     if (first_name != "" && last_name != "") {
+
       let new_user: UserData = {
+
         id: id,
         firstName: first_name,
         lastName: last_name
+
       }
+
       dataArray.push(new_user);
+
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
-      if(availableId.length != 0){
+
+      if (availableId.length != 0) {
+
         nextUserId = availableId[0];
-      }else{
+
+      } else {
+
         nextUserId = highestIdNumberInUserArray() + 1;
+
       }
+
       id_input.value = nextUserId.toString();
       updateUserDataDiv();
 
     }
   }
 
-  function highestIdNumberInUserArray():number{
-    dataArray.sort((a,b)=> a.id - b.id);
-    return dataArray[dataArray.length-1].id;
+  function highestIdNumberInUserArray(): number {
+
+    dataArray.sort((a, b) => a.id - b.id);
+    return dataArray[dataArray.length - 1].id;
+
   }
 
   function removeUser(userToBeRemoved: UserData) {
@@ -262,16 +304,19 @@ export function generateHTML() {
     availableId.push(userToBeRemoved.id);
     sortAvailableIdAscending();
     id_input.value = availableId[0].toString();
-
     dataArray.splice(dataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
     updateUserDataDiv();
 
   }
-  function sortAvailableIdAscending(){
 
-      if(availableId.length > 1){
+  function sortAvailableIdAscending() {
+
+    if (availableId.length > 1) {
+
       availableId.sort((a, b) => a - b);
-      }
+
+    }
+
   }
 
 };

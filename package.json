@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc || exit 0;",
     "importPathUpdate": "node importPathUpdate.js",
-    "nodeRun": "node ./src/index.ts",
-    "denoRun": "deno run ./src/index.ts",
+    "nodeRun": "node ./src/index.ts | more",
+    "denoRun": "deno run ./src/index.ts | more",
     "serverRun": "live-server",
     "server": "pnpm run rmdir -- dist && pnpm run build && pnpm run importPathUpdate && pnpm run serverRun",
     "rmdir": "node -e \"var fs = require('fs'); try{process.argv.slice(1).map((fpath) => fs.rmdirSync(fpath, { recursive: true }))}catch(err){console.log(`Dist not found`)}; process.exit(0);\""

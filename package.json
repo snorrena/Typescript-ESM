@@ -5,12 +5,14 @@
   "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "obfuscate": "javascript-obfuscator dist --output obfuscated --ignore-imports true",
     "esbuild": "esbuild src/**/*.ts --outdir=dist --format=esm --platform=neutral --allow-overwrite",
     "typecheck": "tsc || exit 0",
     "importPathUpdate": "node importPathUpdate.js",
     "nodeRun": "node ./src/index.ts | more",
     "denoRun": "deno ./src/index.ts | more",
     "serverRun": "live-server",
+    "runObfuscated": "cd obfuscated && live-server",
     "server": "pnpm run typecheck && pnpm run rmdir -- dist && pnpm run esbuild && pnpm run importPathUpdate && pnpm run serverRun",
     "rmdir": "node -e \"var fs = require('fs'); try{process.argv.slice(1).map((fpath) => fs.rmdirSync(fpath, { recursive: true }))}catch(err){console.log(`Dist not found`)}; process.exit(0);\""
   },

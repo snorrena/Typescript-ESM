@@ -38,3 +38,5 @@ const getData = function(): UserName[] {
 }
 
 export default getData
+
+export const dataArray: UserName[] = getData();

@@ -1,4 +1,4 @@
-import { dataArray } from "./DisplayData.js";
+import { dataArray } from "./Data.js";
 function generateHTML() {
   const availableId = [];
   const body = document.body;

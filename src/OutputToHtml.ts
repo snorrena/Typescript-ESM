@@ -1,4 +1,4 @@
-import { dataArray } from "./DisplayData.ts";
+import { dataArray } from "./Data.ts";
 import type UserData from "./Types.ts";
 
 export function generateHTML() {

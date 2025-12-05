@@ -24,7 +24,7 @@ export function outputUserData(): void {
   console.log()
   
 
-  console.log("tranditional for loop with index")
+  console.log("traditional for loop with index")
   console.log()
   const userNameArray: UserName[] = getData();
   for (let i = 0; i < userNameArray.length; i++) {
@@ -37,4 +37,3 @@ export function outputUserData(): void {
   }
 
 }
-export const dataArray:UserName[] = getData();

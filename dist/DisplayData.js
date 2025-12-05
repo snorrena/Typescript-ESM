@@ -14,7 +14,7 @@ function outputUserData() {
     console.log(`id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`);
   });
   console.log();
-  console.log("tranditional for loop with index");
+  console.log("traditional for loop with index");
   console.log();
   const userNameArray = getData();
   for (let i = 0; i < userNameArray.length; i++) {
@@ -26,8 +26,6 @@ function outputUserData() {
     }
   }
 }
-const dataArray = getData();
 export {
-  dataArray,
   outputUserData
 };

@@ -1,8 +1,9 @@
 import getData from "./Data.js";
+import { userDataArray } from "./Data.js";
 function outputUserData() {
   console.log("For of loop");
   console.log();
-  for (let name of getData()) {
+  for (let name of userDataArray) {
     console.log(`id: ${name.id}`);
     console.log(`firstName: ${name.firstName}`);
     console.log(`lastName: ${name.lastName}`);
@@ -10,7 +11,7 @@ function outputUserData() {
   console.log();
   console.log("foreach loop");
   console.log();
-  getData().forEach((user) => {
+  userDataArray.forEach((user) => {
     console.log(`id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`);
   });
   console.log();

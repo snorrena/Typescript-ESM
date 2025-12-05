@@ -1,4 +1,4 @@
-import { dataArray } from "./Data.js";
+import { userDataArray } from "./Data.js";
 function generateHTML() {
   const availableId = [];
   const body = document.body;
@@ -32,8 +32,8 @@ function generateHTML() {
     first_name_container.innerHTML = "";
     last_name_container.innerHTML = "";
     remove_button_container.innerHTML = "";
-    dataArray.sort((a, b) => a.id - b.id);
-    dataArray.forEach((user) => {
+    userDataArray.sort((a, b) => a.id - b.id);
+    userDataArray.forEach((user) => {
       current_id_number = user.id;
       let id_div2 = document.createElement("div");
       let first_name_div2 = document.createElement("div");
@@ -182,7 +182,7 @@ function generateHTML() {
         firstName: first_name,
         lastName: last_name
       };
-      dataArray.push(new_user);
+      userDataArray.push(new_user);
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
@@ -196,14 +196,14 @@ function generateHTML() {
     }
   }
   function highestIdNumberInUserArray() {
-    dataArray.sort((a, b) => a.id - b.id);
-    return dataArray[dataArray.length - 1].id;
+    userDataArray.sort((a, b) => a.id - b.id);
+    return userDataArray[userDataArray.length - 1].id;
   }
   function removeUser(userToBeRemoved) {
     availableId.push(userToBeRemoved.id);
     sortAvailableIdAscending();
     id_input.value = availableId[0].toString();
-    dataArray.splice(dataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
+    userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
     updateUserDataDiv();
   }
   function sortAvailableIdAscending() {

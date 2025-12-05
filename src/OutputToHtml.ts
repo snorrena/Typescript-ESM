@@ -1,4 +1,4 @@
-import { dataArray } from "./Data.ts";
+import { userDataArray } from "./Data.ts";
 import type UserData from "./Types.ts";
 
 export function generateHTML() {
@@ -58,10 +58,10 @@ export function generateHTML() {
     last_name_container.innerHTML = "";
     remove_button_container.innerHTML = "";
 
-    dataArray.sort((a, b) => a.id - b.id);
+    userDataArray.sort((a, b) => a.id - b.id);
 
     //this foreach loop passes each item in the data array to an arrow function
-    dataArray.forEach((user) => {
+    userDataArray.forEach((user) => {
 
       current_id_number = user.id;
 
@@ -296,7 +296,7 @@ export function generateHTML() {
 
       }
 
-      dataArray.push(new_user);
+      userDataArray.push(new_user);
 
       first_name_input.value = "";
       last_name_input.value = "";
@@ -320,8 +320,8 @@ export function generateHTML() {
 
   function highestIdNumberInUserArray(): number {
 
-    dataArray.sort((a, b) => a.id - b.id);
-    return dataArray[dataArray.length - 1].id;
+    userDataArray.sort((a, b) => a.id - b.id);
+    return userDataArray[userDataArray.length - 1].id;
 
   }
 
@@ -330,7 +330,7 @@ export function generateHTML() {
     availableId.push(userToBeRemoved.id);
     sortAvailableIdAscending();
     id_input.value = availableId[0].toString();
-    dataArray.splice(dataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
+    userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
     updateUserDataDiv();
 
   }

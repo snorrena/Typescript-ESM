@@ -1,5 +1,7 @@
-//import of a default functionn export from Data.ts
+//import of a default export from Data.ts
 import getData from "./Data.ts"
+//import of a named import from Data.ts
+import { userDataArray } from "./Data.ts"
 import type UserName from "./Types.ts"
 
 //definition of a named exported function with no return type
@@ -9,7 +11,7 @@ export function outputUserData(): void {
   // the for loop iterates over the array of user names and uses interpolation to output the details of each user
   console.log("For of loop")
   console.log()
-  for (let name of getData()) {
+  for (let name of userDataArray) {
     console.log(`id: ${name.id}`)
     console.log(`firstName: ${name.firstName}`)
     console.log(`lastName: ${name.lastName}`)
@@ -20,7 +22,7 @@ export function outputUserData(): void {
   console.log("foreach loop")
   console.log()
   //user a foreach method on the getData() method and an arrow function to iterate over the user name array
-  getData().forEach((user) => { console.log(`id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`) })
+  userDataArray.forEach((user) => { console.log(`id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`) })
   console.log()
   
 

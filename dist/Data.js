@@ -29,8 +29,8 @@ const getData = function() {
   return userNameArray;
 };
 var Data_default = getData;
-const dataArray = getData();
+const userDataArray = getData();
 export {
-  dataArray,
-  Data_default as default
+  Data_default as default,
+  userDataArray
 };

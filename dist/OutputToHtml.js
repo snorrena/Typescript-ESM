@@ -1,11 +1,12 @@
 import getData from "./Data.js";
 function generateHTML() {
-  let availableId = [];
+  let availableId = /* @__PURE__ */ new Set();
   let availableIdJsonString = localStorage.getItem("availableIdData");
   if (availableIdJsonString !== null) {
     let availableIdTemp = JSON.parse(availableIdJsonString);
-    if (availableIdTemp.length > 0)
+    if (availableIdTemp.size > 0) {
       availableId = JSON.parse(availableIdJsonString);
+    }
   }
   let userDataArray = getData();
   let userDataJsonString = localStorage.getItem("savedUserData");
@@ -14,7 +15,8 @@ function generateHTML() {
     if (userDataArrayTemp.length > 0) {
       userDataArray = JSON.parse(userDataJsonString);
     }
-    availableId = [];
+  } else {
+    availableId.clear();
   }
   const body = document.body;
   const heading = document.createElement("h1");
@@ -115,10 +117,14 @@ function generateHTML() {
   const id_input = document.createElement("input");
   id_input.type = "number";
   id_input.id = "id_input_id";
-  if (availableId.length > 0) {
-    console.log("Available IDs found, using the lowest available ID.");
+  if (availableId.size > 0) {
     sortAvailableIdAscending(availableId);
-    let availableIdFromArray = availableId.shift();
+    let arrayFromSet = [...availableId];
+    let availableIdFromArray = arrayFromSet.shift();
+    availableId.clear();
+    arrayFromSet.forEach((num) => {
+      availableId.add(num);
+    });
     if (availableIdFromArray !== void 0)
       id_input.value = availableIdFromArray.toString();
   } else {
@@ -180,7 +186,7 @@ function generateHTML() {
   const button = document.createElement("button");
   button.innerText = "Add User";
   button_div.appendChild(button);
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", () => {
     add_new_user();
   });
   document.addEventListener("keydown", (event) => {
@@ -191,8 +197,13 @@ function generateHTML() {
   body.appendChild(button_div);
   function add_new_user() {
     let id;
-    if (availableId.length >= 1) {
-      id = availableId.shift();
+    if (availableId.size >= 1) {
+      let arrayFromSet = [...availableId];
+      id = arrayFromSet.shift();
+      availableId.clear();
+      arrayFromSet.forEach((num) => {
+        availableId.add(num);
+      });
       sortAvailableIdAscending(availableId);
       localStorage.removeItem("availableIdData");
       localStorage.setItem("availableIdData", JSON.stringify(availableId));
@@ -210,15 +221,14 @@ function generateHTML() {
       };
       userDataArray.push(new_user);
       userDataArray.sort((a, b) => a.id - b.id);
-      let currentUserData = JSON.stringify(userDataArray);
-      console.log(`userDataArray after add of ${new_user.id}, userDataArray: ${currentUserData}`);
       localStorage.removeItem("savedUserData");
       localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
-      if (availableId.length !== 0) {
-        nextUserId = availableId[0];
+      if (availableId.size !== 0) {
+        let arrayFromSet = [...availableId];
+        nextUserId = arrayFromSet[0];
       } else {
         nextUserId = highestIdNumberInUserArray() + 1;
       }
@@ -231,23 +241,26 @@ function generateHTML() {
     return userDataArray[userDataArray.length - 1].id;
   }
   function removeUser(userToBeRemoved, availableId2) {
-    availableId2.push(userToBeRemoved.id);
+    availableId2.add(userToBeRemoved.id);
     sortAvailableIdAscending(availableId2);
     localStorage.removeItem("availableIdData");
     localStorage.setItem("availableIdData", JSON.stringify(availableId2));
-    id_input.value = availableId2[0].toString();
+    let arrayIds = [...availableId2];
+    id_input.value = arrayIds[0].toString();
     userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
-    let currentUserData = JSON.stringify(userDataArray);
-    console.log(`userDataArray after removal of ${userToBeRemoved.id}, userDataArray: ${currentUserData}`);
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
     updateUserDataDiv(userDataArray);
   }
   function sortAvailableIdAscending(availableId2) {
-    if (availableId2.length > 1) {
-      availableId2.sort((a, b) => a - b);
+    if (availableId2.size > 1) {
+      const sortedNumberSet = Array.from(availableId2);
+      sortedNumberSet.sort((a, b) => a - b);
+      availableId2.clear();
+      sortedNumberSet.forEach((num) => {
+        availableId2.add(num);
+      });
     }
-    console.log(`availableId array: ${availableId2}`);
   }
   function setCursorFocus() {
     document.getElementById("first_name_input_id")?.focus();

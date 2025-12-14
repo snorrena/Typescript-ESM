@@ -4,12 +4,13 @@ import getData from "./Data.ts";
 export function generateHTML() {
 
   //sets availableId and userDataArray using localStorage if it exists
-  let availableId: number[] = [];
+  let availableId = new Set<number>();
   let availableIdJsonString: string | null = localStorage.getItem("availableIdData");
   if (availableIdJsonString !== null) {
-    let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
-    if (availableIdTemp.length > 0)
-      availableId = JSON.parse(availableIdJsonString) as number[];
+    let availableIdTemp = JSON.parse(availableIdJsonString) as Set<number>;
+    if (availableIdTemp.size > 0) {
+      availableId = JSON.parse(availableIdJsonString);
+    }
   }
 
   let userDataArray: UserData[] = getData();
@@ -19,7 +20,8 @@ export function generateHTML() {
     if (userDataArrayTemp.length > 0) {
       userDataArray = JSON.parse(userDataJsonString) as UserData[];
     }
-    availableId = [];
+  } else {
+    availableId.clear();
   }
 
   //get the body element and add an underlined heading
@@ -198,10 +200,12 @@ export function generateHTML() {
   const id_input = document.createElement("input");
   id_input.type = "number";
   id_input.id = "id_input_id";
-  if (availableId.length > 0) {
-    console.log("Available IDs found, using the lowest available ID.");
+  if (availableId.size > 0) {
     sortAvailableIdAscending(availableId);
-    let availableIdFromArray = availableId.shift();
+    let arrayFromSet = [...availableId];
+    let availableIdFromArray = arrayFromSet.shift();
+    availableId.clear();
+    arrayFromSet.forEach((num) => { availableId.add(num) });
     if (availableIdFromArray !== undefined)
       id_input.value = availableIdFromArray.toString();
   } else {
@@ -278,7 +282,7 @@ export function generateHTML() {
   button.innerText = "Add User";
   button_div.appendChild(button);
 
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", () => {
 
     add_new_user();
 
@@ -300,9 +304,15 @@ export function generateHTML() {
 
     let id: number;
 
-    if (availableId.length >= 1) {
+    if (availableId.size >= 1) {
 
-      id = availableId.shift() as number;
+      let arrayFromSet = [...availableId];
+
+      id = arrayFromSet.shift() as number;
+
+      availableId.clear();
+
+      arrayFromSet.forEach((num) => { availableId.add(num) });
 
       sortAvailableIdAscending(availableId);
 
@@ -331,9 +341,7 @@ export function generateHTML() {
       }
 
       userDataArray.push(new_user);
-      userDataArray.sort((a,b)=> a.id- b.id);
-      let currentUserData = JSON.stringify(userDataArray);
-      console.log(`userDataArray after add of ${new_user.id}, userDataArray: ${currentUserData}`);
+      userDataArray.sort((a, b) => a.id - b.id);
       localStorage.removeItem("savedUserData");
       localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
 
@@ -341,9 +349,11 @@ export function generateHTML() {
       last_name_input.value = "";
       let nextUserId = 0;
 
-      if (availableId.length !== 0) {
+      if (availableId.size !== 0) {
 
-        nextUserId = availableId[0] as number;
+        let arrayFromSet = [...availableId];
+
+        nextUserId = arrayFromSet[0] as number;
 
       } else {
 
@@ -364,31 +374,34 @@ export function generateHTML() {
 
   }
 
-  function removeUser(userToBeRemoved: UserData, availableId: number[]) {
+  function removeUser(userToBeRemoved: UserData, availableId: Set<number>) {
 
-    availableId.push(userToBeRemoved.id);
+    availableId.add(userToBeRemoved.id);
     sortAvailableIdAscending(availableId);
     localStorage.removeItem("availableIdData");
     localStorage.setItem("availableIdData", JSON.stringify(availableId));
-    id_input.value = availableId[0].toString();
+    let arrayIds = [...availableId];
+    id_input.value = arrayIds[0].toString();
     userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
-    let currentUserData = JSON.stringify(userDataArray);
-    console.log(`userDataArray after removal of ${userToBeRemoved.id}, userDataArray: ${currentUserData}`);
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
     updateUserDataDiv(userDataArray);
 
   }
 
-  function sortAvailableIdAscending(availableId: number[]) {
+  function sortAvailableIdAscending(availableId: Set<number>) {
 
-    if (availableId.length > 1) {
+    if (availableId.size > 1) {
 
-      availableId.sort((a, b) => a - b);
+      const sortedNumberSet: number[] = Array.from(availableId);
+
+      sortedNumberSet.sort((a, b) => a - b);
+
+      availableId.clear();
+
+      sortedNumberSet.forEach((num) => { availableId.add(num) });
 
     }
-
-    console.log(`availableId array: ${availableId}`);
 
   }
 

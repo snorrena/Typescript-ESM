@@ -1,16 +1,32 @@
-import { userDataArray } from "./Data.ts";
 import type UserData from "./Types.ts";
+import getData from "./Data.ts";
 
 export function generateHTML() {
 
-  const availableId: number[] = [];
+  //sets availableId and userDataArray using localStorage if it exists
+  let availableId: number[] = [];
+  let availableIdJsonString: string | null = localStorage.getItem("availableIdData");
+  if (availableIdJsonString !== null) {
+    let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
+    if (availableIdTemp.length > 0)
+      availableId = JSON.parse(availableIdJsonString) as number[];
+  }
+
+  let userDataArray: UserData[] = getData();
+  let userDataJsonString: string | null = localStorage.getItem("savedUserData");
+  if (userDataJsonString !== null) {
+    let userDataArrayTemp = JSON.parse(userDataJsonString) as UserData[];
+    if (userDataArrayTemp.length > 0) {
+      userDataArray = JSON.parse(userDataJsonString) as UserData[];
+    }
+    availableId = [];
+  }
 
   //get the body element and add an underlined heading
   const body = document.body;
   const heading = document.createElement("h1");
   let lastUserAddedIndex: number;
   heading.innerHTML = "User Data";
-  // heading.style.textDecoration = "underline";
   body.appendChild(heading);
 
   //create the main div to contain all user data elements
@@ -50,7 +66,7 @@ export function generateHTML() {
   //initialize and set the current user index #
   let current_id_number = 0;
 
-  function updateUserDataDiv() {
+  function updateUserDataDiv(userDataArray: UserData[]) {
 
     //clear the data containers to avoid duplicate data when adding a new user
     id_container.innerHTML = "";
@@ -79,7 +95,7 @@ export function generateHTML() {
 
         // data_div.style.marginBottom = "5px";
         data_div.style.display = "flex";
-        data_div.style.alignItems= "center";
+        data_div.style.alignItems = "center";
         data_div.style.height = "50px";
 
         const isLastItem = data_divs.indexOf(data_div) === data_divs.length - 1;
@@ -102,11 +118,11 @@ export function generateHTML() {
 
       remove_button.addEventListener("click", () => {
 
-        removeUser(user);
+        removeUser(user, availableId);
 
       });
 
-      //the text data style is set to align left 
+      //the text data style is set to align left
       id_div.style.textAlign = "left";
       first_name_div.style.textAlign = "left";
       last_name_div.style.textAlign = "left";
@@ -148,10 +164,10 @@ export function generateHTML() {
 
     setCursorFocus();
 
-  };
+  }
 
   //this is the call of the function defined above
-  updateUserDataDiv();
+  updateUserDataDiv(userDataArray);
 
   //create a heading for the add new user form
   const add_new_user_h1 = document.createElement("h1");
@@ -182,7 +198,15 @@ export function generateHTML() {
   const id_input = document.createElement("input");
   id_input.type = "number";
   id_input.id = "id_input_id";
-  id_input.value = (current_id_number + 1).toString();
+  if (availableId.length > 0) {
+    console.log("Available IDs found, using the lowest available ID.");
+    sortAvailableIdAscending(availableId);
+    let availableIdFromArray = availableId.shift();
+    if (availableIdFromArray !== undefined)
+      id_input.value = availableIdFromArray.toString();
+  } else {
+    id_input.value = (current_id_number + 1).toString();
+  }
   id_input.disabled = true;
   id_input.style.width = "50%"
 
@@ -218,7 +242,7 @@ export function generateHTML() {
   id_div.style.display = "flex";
   id_div.style.alignItems = "center";
   id_div.style.height = "40px";
-  
+
   const first_name_div = document.createElement("div");
   first_name_div.style.display = "flex";
   first_name_div.style.alignItems = "center";
@@ -253,9 +277,14 @@ export function generateHTML() {
   const button = document.createElement("button");
   button.innerText = "Add User";
   button_div.appendChild(button);
-  button.addEventListener("click", add_new_user);
 
-  document.addEventListener("keydown", function(event) {
+  button.addEventListener("click", (event) => {
+
+    add_new_user();
+
+  });
+
+  document.addEventListener("keydown", (event) => {
 
     if (event.key === "Enter") {
 
@@ -269,12 +298,17 @@ export function generateHTML() {
 
   function add_new_user() {
 
-    let id: number = current_id_number;
+    let id: number;
 
-    if (availableId.length != 0) {
+    if (availableId.length >= 1) {
 
-      sortAvailableIdAscending();
       id = availableId.shift() as number;
+
+      sortAvailableIdAscending(availableId);
+
+      localStorage.removeItem("availableIdData");
+
+      localStorage.setItem("availableIdData", JSON.stringify(availableId));
 
     } else {
 
@@ -297,14 +331,19 @@ export function generateHTML() {
       }
 
       userDataArray.push(new_user);
+      userDataArray.sort((a,b)=> a.id- b.id);
+      let currentUserData = JSON.stringify(userDataArray);
+      console.log(`userDataArray after add of ${new_user.id}, userDataArray: ${currentUserData}`);
+      localStorage.removeItem("savedUserData");
+      localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
 
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
 
-      if (availableId.length != 0) {
+      if (availableId.length !== 0) {
 
-        nextUserId = availableId[0];
+        nextUserId = availableId[0] as number;
 
       } else {
 
@@ -313,7 +352,7 @@ export function generateHTML() {
       }
 
       id_input.value = nextUserId.toString();
-      updateUserDataDiv();
+      updateUserDataDiv(userDataArray);
 
     }
   }
@@ -325,23 +364,31 @@ export function generateHTML() {
 
   }
 
-  function removeUser(userToBeRemoved: UserData) {
+  function removeUser(userToBeRemoved: UserData, availableId: number[]) {
 
     availableId.push(userToBeRemoved.id);
-    sortAvailableIdAscending();
+    sortAvailableIdAscending(availableId);
+    localStorage.removeItem("availableIdData");
+    localStorage.setItem("availableIdData", JSON.stringify(availableId));
     id_input.value = availableId[0].toString();
     userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
-    updateUserDataDiv();
+    let currentUserData = JSON.stringify(userDataArray);
+    console.log(`userDataArray after removal of ${userToBeRemoved.id}, userDataArray: ${currentUserData}`);
+    localStorage.removeItem("savedUserData");
+    localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
+    updateUserDataDiv(userDataArray);
 
   }
 
-  function sortAvailableIdAscending() {
+  function sortAvailableIdAscending(availableId: number[]) {
 
     if (availableId.length > 1) {
 
       availableId.sort((a, b) => a - b);
 
     }
+
+    console.log(`availableId array: ${availableId}`);
 
   }
 

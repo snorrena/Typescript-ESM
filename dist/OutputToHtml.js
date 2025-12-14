@@ -1,6 +1,21 @@
-import { userDataArray } from "./Data.js";
+import getData from "./Data.js";
 function generateHTML() {
-  const availableId = [];
+  let availableId = [];
+  let availableIdJsonString = localStorage.getItem("availableIdData");
+  if (availableIdJsonString !== null) {
+    let availableIdTemp = JSON.parse(availableIdJsonString);
+    if (availableIdTemp.length > 0)
+      availableId = JSON.parse(availableIdJsonString);
+  }
+  let userDataArray = getData();
+  let userDataJsonString = localStorage.getItem("savedUserData");
+  if (userDataJsonString !== null) {
+    let userDataArrayTemp = JSON.parse(userDataJsonString);
+    if (userDataArrayTemp.length > 0) {
+      userDataArray = JSON.parse(userDataJsonString);
+    }
+    availableId = [];
+  }
   const body = document.body;
   const heading = document.createElement("h1");
   let lastUserAddedIndex;
@@ -27,13 +42,13 @@ function generateHTML() {
     container2.style.justifyContent = "space-between";
   }
   let current_id_number = 0;
-  function updateUserDataDiv() {
+  function updateUserDataDiv(userDataArray2) {
     id_container.innerHTML = "";
     first_name_container.innerHTML = "";
     last_name_container.innerHTML = "";
     remove_button_container.innerHTML = "";
-    userDataArray.sort((a, b) => a.id - b.id);
-    userDataArray.forEach((user) => {
+    userDataArray2.sort((a, b) => a.id - b.id);
+    userDataArray2.forEach((user) => {
       current_id_number = user.id;
       let id_div2 = document.createElement("div");
       let first_name_div2 = document.createElement("div");
@@ -54,7 +69,7 @@ function generateHTML() {
       let remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
       remove_button.addEventListener("click", () => {
-        removeUser(user);
+        removeUser(user, availableId);
       });
       id_div2.style.textAlign = "left";
       first_name_div2.style.textAlign = "left";
@@ -79,8 +94,7 @@ function generateHTML() {
     user_data_div.appendChild(container);
     setCursorFocus();
   }
-  ;
-  updateUserDataDiv();
+  updateUserDataDiv(userDataArray);
   const add_new_user_h1 = document.createElement("h1");
   add_new_user_h1.innerText = "Add a new user";
   const add_new_user_div = document.createElement("div");
@@ -101,7 +115,15 @@ function generateHTML() {
   const id_input = document.createElement("input");
   id_input.type = "number";
   id_input.id = "id_input_id";
-  id_input.value = (current_id_number + 1).toString();
+  if (availableId.length > 0) {
+    console.log("Available IDs found, using the lowest available ID.");
+    sortAvailableIdAscending(availableId);
+    let availableIdFromArray = availableId.shift();
+    if (availableIdFromArray !== void 0)
+      id_input.value = availableIdFromArray.toString();
+  } else {
+    id_input.value = (current_id_number + 1).toString();
+  }
   id_input.disabled = true;
   id_input.style.width = "50%";
   const first_name_input = document.createElement("input");
@@ -158,18 +180,22 @@ function generateHTML() {
   const button = document.createElement("button");
   button.innerText = "Add User";
   button_div.appendChild(button);
-  button.addEventListener("click", add_new_user);
-  document.addEventListener("keydown", function(event) {
+  button.addEventListener("click", (event) => {
+    add_new_user();
+  });
+  document.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       add_new_user();
     }
   });
   body.appendChild(button_div);
   function add_new_user() {
-    let id = current_id_number;
-    if (availableId.length != 0) {
-      sortAvailableIdAscending();
+    let id;
+    if (availableId.length >= 1) {
       id = availableId.shift();
+      sortAvailableIdAscending(availableId);
+      localStorage.removeItem("availableIdData");
+      localStorage.setItem("availableIdData", JSON.stringify(availableId));
     } else {
       id = ++current_id_number;
     }
@@ -183,33 +209,45 @@ function generateHTML() {
         lastName: last_name
       };
       userDataArray.push(new_user);
+      userDataArray.sort((a, b) => a.id - b.id);
+      let currentUserData = JSON.stringify(userDataArray);
+      console.log(`userDataArray after add of ${new_user.id}, userDataArray: ${currentUserData}`);
+      localStorage.removeItem("savedUserData");
+      localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
-      if (availableId.length != 0) {
+      if (availableId.length !== 0) {
         nextUserId = availableId[0];
       } else {
         nextUserId = highestIdNumberInUserArray() + 1;
       }
       id_input.value = nextUserId.toString();
-      updateUserDataDiv();
+      updateUserDataDiv(userDataArray);
     }
   }
   function highestIdNumberInUserArray() {
     userDataArray.sort((a, b) => a.id - b.id);
     return userDataArray[userDataArray.length - 1].id;
   }
-  function removeUser(userToBeRemoved) {
-    availableId.push(userToBeRemoved.id);
-    sortAvailableIdAscending();
-    id_input.value = availableId[0].toString();
+  function removeUser(userToBeRemoved, availableId2) {
+    availableId2.push(userToBeRemoved.id);
+    sortAvailableIdAscending(availableId2);
+    localStorage.removeItem("availableIdData");
+    localStorage.setItem("availableIdData", JSON.stringify(availableId2));
+    id_input.value = availableId2[0].toString();
     userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
-    updateUserDataDiv();
+    let currentUserData = JSON.stringify(userDataArray);
+    console.log(`userDataArray after removal of ${userToBeRemoved.id}, userDataArray: ${currentUserData}`);
+    localStorage.removeItem("savedUserData");
+    localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
+    updateUserDataDiv(userDataArray);
   }
-  function sortAvailableIdAscending() {
-    if (availableId.length > 1) {
-      availableId.sort((a, b) => a - b);
+  function sortAvailableIdAscending(availableId2) {
+    if (availableId2.length > 1) {
+      availableId2.sort((a, b) => a - b);
     }
+    console.log(`availableId array: ${availableId2}`);
   }
   function setCursorFocus() {
     document.getElementById("first_name_input_id")?.focus();

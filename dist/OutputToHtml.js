@@ -198,13 +198,13 @@ function generateHTML() {
   function add_new_user() {
     let id;
     if (availableId.size >= 1) {
+      sortAvailableIdAscending(availableId);
       let arrayFromSet = [...availableId];
       id = arrayFromSet.shift();
       availableId.clear();
       arrayFromSet.forEach((num) => {
         availableId.add(num);
       });
-      sortAvailableIdAscending(availableId);
       localStorage.removeItem("availableIdData");
       localStorage.setItem("availableIdData", JSON.stringify(availableId));
     } else {

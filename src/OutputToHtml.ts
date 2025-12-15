@@ -200,17 +200,26 @@ export function generateHTML() {
   const id_input = document.createElement("input");
   id_input.type = "number";
   id_input.id = "id_input_id";
+
   if (availableId.size > 0) {
+
     sortAvailableIdAscending(availableId);
+
+    //convert set to array with spread opperator deconstruction. Extract the lowest value. Clear the set and copy the values back to the set in a foreach loop.
     let arrayFromSet = [...availableId];
     let availableIdFromArray = arrayFromSet.shift();
     availableId.clear();
     arrayFromSet.forEach((num) => { availableId.add(num) });
+
     if (availableIdFromArray !== undefined)
       id_input.value = availableIdFromArray.toString();
+
   } else {
+
     id_input.value = (current_id_number + 1).toString();
+
   }
+
   id_input.disabled = true;
   id_input.style.width = "50%"
 
@@ -306,18 +315,14 @@ export function generateHTML() {
 
     if (availableId.size >= 1) {
 
-      let arrayFromSet = [...availableId];
-
-      id = arrayFromSet.shift() as number;
-
-      availableId.clear();
-
-      arrayFromSet.forEach((num) => { availableId.add(num) });
-
       sortAvailableIdAscending(availableId);
 
-      localStorage.removeItem("availableIdData");
+      let arrayFromSet = [...availableId];
+      id = arrayFromSet.shift() as number;
+      availableId.clear();
+      arrayFromSet.forEach((num) => { availableId.add(num) });
 
+      localStorage.removeItem("availableIdData");
       localStorage.setItem("availableIdData", JSON.stringify(availableId));
 
     } else {

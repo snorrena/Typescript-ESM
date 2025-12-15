@@ -24,10 +24,12 @@ export function generateHTML() {
     availableId.clear();
   }
 
+  //store the index of the last added user for highlight in yellow background
+  let lastUserAddedIndex: number;
+
   //get the body element and add an underlined heading
   const body = document.body;
   const heading = document.createElement("h1");
-  let lastUserAddedIndex: number;
   heading.innerHTML = "User Data";
   body.appendChild(heading);
 

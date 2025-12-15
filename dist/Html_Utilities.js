@@ -1,0 +1,53 @@
+import getData from "./Data.js";
+function sortAvailableIdAscending(availableId) {
+  if (availableId.size > 1) {
+    const sortedNumberSet = Array.from(availableId);
+    sortedNumberSet.sort((a, b) => a - b);
+    availableId.clear();
+    sortedNumberSet.forEach((num) => {
+      availableId.add(num);
+    });
+  }
+}
+function setCursorFocus() {
+  document.getElementById("first_name_input_id")?.focus();
+}
+function highestIdNumberInUserArray(userDataArray) {
+  userDataArray.sort((a, b) => a.id - b.id);
+  return userDataArray[userDataArray.length - 1].id;
+}
+function setAvailableId(availableId) {
+  let availableIdJsonString = localStorage.getItem("availableIdData");
+  if (availableIdJsonString !== null) {
+    let availableIdTemp = JSON.parse(availableIdJsonString);
+    console.log(`availableId: ${JSON.stringify(availableId)}`);
+    if (availableIdTemp.size > 0) {
+      availableId = JSON.parse(availableIdJsonString);
+    }
+  }
+  return availableId;
+}
+function setUserData(userDataArray, availableId) {
+  let userDataJsonString = localStorage.getItem("savedUserData");
+  if (userDataJsonString !== null) {
+    let userDataArrayTemp = JSON.parse(userDataJsonString);
+    if (userDataArrayTemp.length > 0) {
+      userDataArray = JSON.parse(userDataJsonString);
+      availableId = setAvailableId(availableId);
+    } else {
+      userDataArray = getData();
+      availableId.clear();
+    }
+  }
+  return { _userData: userDataArray, _availableId: availableId };
+}
+const Html_Utils = {
+  sortAvailableIdAscending,
+  setCursorFocus,
+  highestIdNumberInUserArray,
+  setUserData
+};
+var Html_Utilities_default = Html_Utils;
+export {
+  Html_Utilities_default as default
+};

@@ -18,9 +18,9 @@ function generateHTML() {
   } else {
     availableId.clear();
   }
+  let lastUserAddedIndex;
   const body = document.body;
   const heading = document.createElement("h1");
-  let lastUserAddedIndex;
   heading.innerHTML = "User Data";
   body.appendChild(heading);
   const user_data_div = document.createElement("div");

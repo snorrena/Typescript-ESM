@@ -4,8 +4,9 @@ function generateHTML() {
   let availableIdJsonString = localStorage.getItem("availableIdData");
   if (availableIdJsonString !== null) {
     let availableIdTemp = JSON.parse(availableIdJsonString);
-    if (availableIdTemp.size > 0) {
-      availableId = JSON.parse(availableIdJsonString);
+    if (availableIdTemp.length > 0) {
+      let availSetTemp = /* @__PURE__ */ new Set([...availableIdTemp]);
+      availableId = availSetTemp;
     }
   }
   let userDataArray = getData();
@@ -14,9 +15,10 @@ function generateHTML() {
     let userDataArrayTemp = JSON.parse(userDataJsonString);
     if (userDataArrayTemp.length > 0) {
       userDataArray = JSON.parse(userDataJsonString);
+    } else {
+      availableId.clear();
+      localStorage.removeItem("availableIdData");
     }
-  } else {
-    availableId.clear();
   }
   let lastUserAddedIndex;
   const body = document.body;
@@ -244,7 +246,8 @@ function generateHTML() {
     availableId2.add(userToBeRemoved.id);
     sortAvailableIdAscending(availableId2);
     localStorage.removeItem("availableIdData");
-    localStorage.setItem("availableIdData", JSON.stringify(availableId2));
+    localStorage.setItem("availableIdData", JSON.stringify([...availableId2]));
+    checkSavedAvailableIdData();
     let arrayIds = [...availableId2];
     id_input.value = arrayIds[0].toString();
     userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
@@ -264,6 +267,14 @@ function generateHTML() {
   }
   function setCursorFocus() {
     document.getElementById("first_name_input_id")?.focus();
+  }
+  function checkSavedAvailableIdData() {
+    let availIdStr = localStorage.getItem("availableIdData");
+    let availIdNumSet = /* @__PURE__ */ new Set();
+    if (availIdStr != null) {
+      let numArray = JSON.parse(availIdStr);
+      availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
+    }
   }
 }
 ;

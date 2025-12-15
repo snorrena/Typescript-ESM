@@ -6,22 +6,38 @@ export function generateHTML() {
   //sets availableId and userDataArray using localStorage if it exists
   let availableId = new Set<number>();
   let availableIdJsonString: string | null = localStorage.getItem("availableIdData");
+
   if (availableIdJsonString !== null) {
-    let availableIdTemp = JSON.parse(availableIdJsonString) as Set<number>;
-    if (availableIdTemp.size > 0) {
-      availableId = JSON.parse(availableIdJsonString);
+
+    let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
+    
+    if (availableIdTemp.length > 0) {
+
+      let availSetTemp: Set<number> = new Set([...availableIdTemp]);
+      availableId = availSetTemp;
+
     }
+
   }
 
   let userDataArray: UserData[] = getData();
   let userDataJsonString: string | null = localStorage.getItem("savedUserData");
+
   if (userDataJsonString !== null) {
+
     let userDataArrayTemp = JSON.parse(userDataJsonString) as UserData[];
+
     if (userDataArrayTemp.length > 0) {
+
       userDataArray = JSON.parse(userDataJsonString) as UserData[];
+
+    } else {
+
+      availableId.clear();
+      localStorage.removeItem("availableIdData");
+
     }
-  } else {
-    availableId.clear();
+
   }
 
   //store the index of the last added user for highlight in yellow background
@@ -386,7 +402,8 @@ export function generateHTML() {
     availableId.add(userToBeRemoved.id);
     sortAvailableIdAscending(availableId);
     localStorage.removeItem("availableIdData");
-    localStorage.setItem("availableIdData", JSON.stringify(availableId));
+    localStorage.setItem("availableIdData", JSON.stringify([...availableId]));
+    checkSavedAvailableIdData();
     let arrayIds = [...availableId];
     id_input.value = arrayIds[0].toString();
     userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
@@ -414,6 +431,22 @@ export function generateHTML() {
 
   function setCursorFocus() {
     document.getElementById("first_name_input_id")?.focus();
+  }
+
+  function checkSavedAvailableIdData(): void {
+
+    let availIdStr = localStorage.getItem("availableIdData");
+
+    let availIdNumSet = new Set<number>();
+
+    if (availIdStr != null) {
+
+      let numArray = JSON.parse(availIdStr) as number[];
+
+      availIdNumSet = new Set([...numArray]);
+
+    }
+
   }
 
 };

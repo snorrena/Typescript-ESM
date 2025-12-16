@@ -37,6 +37,7 @@ function setUserData(userDataArray, availableId) {
     } else {
       userDataArray = getData();
       availableId.clear();
+      localStorage.removeItem("availableIdData");
     }
   }
   return { _userData: userDataArray, _availableId: availableId };
@@ -49,6 +50,7 @@ function checkSavedAvailableIdData() {
     if (numArray.length > 0)
       availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
   }
+  console.log(`savedUserData: ${[...availIdNumSet]}`);
 }
 const Html_Utils = {
   sortAvailableIdAscending,

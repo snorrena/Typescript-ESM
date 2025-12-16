@@ -70,6 +70,8 @@ function setUserData(userDataArray: UserData[], availableId: Set<number>): { _us
 
       availableId.clear();
 
+      localStorage.removeItem("availableIdData");
+
     }
 
   }
@@ -93,6 +95,9 @@ function checkSavedAvailableIdData(): void {
       availIdNumSet = new Set([...numArray]);
 
   }
+
+  console.log(`savedUserData: ${[...availIdNumSet]}`);
+
 }
 
 const Html_Utils = {

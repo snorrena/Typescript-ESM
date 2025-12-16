@@ -111,7 +111,7 @@ export function generateHTML() {
 
       remove_button.addEventListener("click", () => {
 
-        removeUser(user, availableId);
+        removeUser(user);
 
       });
 
@@ -192,18 +192,11 @@ export function generateHTML() {
   id_input.type = "number";
   id_input.id = "id_input_id";
 
+  //set the id_input value for the next user to be added
   if (availableId.size > 0) {
 
-    Html_Utils.sortAvailableIdAscending(availableId);
-
-    //convert set to array with spread opperator deconstruction. Extract the lowest value. Clear the set and copy the values back to the set in a foreach loop.
-    let arrayFromSet = [...availableId];
-    let availableIdFromArray = arrayFromSet.shift();
-    availableId.clear();
-    arrayFromSet.forEach((num) => { availableId.add(num) });
-
-    if (availableIdFromArray !== undefined)
-      id_input.value = availableIdFromArray.toString();
+    let arrayFromSet: number[] = [...availableId];
+    id_input.value = arrayFromSet[0].toString();
 
   } else {
 
@@ -302,36 +295,9 @@ export function generateHTML() {
 
   function add_new_user() {
 
-    let id: number | undefined = undefined;
-    let idArray: number[] = [];
-    let idArrayStr = localStorage.getItem("availableIdData");
+    //creat a new user obj and added to collection
+    let id: number = parseInt(id_input.value);
 
-    if (idArrayStr != null) {
-
-      idArray = JSON.parse(idArrayStr) as number[];
-
-      if (idArray.length > 1) {
-
-        idArray.sort((a, b) => a - b);
-
-      }
-
-      id = idArray.shift();
-      idArray.forEach((num) => { availableId.add(num) });
-      localStorage.removeItem("availableIdData");
-      localStorage.setItem("availableIdData", JSON.stringify(idArray));
-
-      Html_Utils.checkSavedAvailableIdData();
-
-    }
-
-    if (id == undefined) {
-
-      id = ++current_id_number;
-
-    }
-
-    lastUserAddedIndex = id as number;
     let first_name = first_name_input.value;
     let last_name = last_name_input.value;
 
@@ -339,7 +305,7 @@ export function generateHTML() {
 
       let new_user: UserData = {
 
-        id: id as number,
+        id: id,
         firstName: first_name,
         lastName: last_name
 
@@ -350,13 +316,42 @@ export function generateHTML() {
       localStorage.removeItem("savedUserData");
       localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
 
+      lastUserAddedIndex = id;
+
+      //update the array of available user id number
+      let idArray: number[] = [];
+      let idArrayStr = localStorage.getItem("availableIdData");
+
+      if (idArrayStr != null) {
+
+        idArray = JSON.parse(idArrayStr) as number[];
+
+        if (idArray.length > 1) {
+
+          idArray.sort((a, b) => a - b);
+
+        }
+
+        if (idArray.indexOf(id) !== -1) {
+
+          idArray.splice(idArray.indexOf(id), 1);
+          localStorage.removeItem("availableIdData");
+          localStorage.setItem("availableIdData", JSON.stringify(idArray));
+
+        }
+
+        Html_Utils.checkSavedAvailableIdData();
+
+      }
+
       first_name_input.value = "";
       last_name_input.value = "";
+
       let nextUserId = 0;
 
       if (idArray.length !== 0) {
 
-        nextUserId = Math.max(...idArray);
+        nextUserId = idArray[0];
 
       } else {
 
@@ -370,15 +365,30 @@ export function generateHTML() {
     }
   }
 
-  function removeUser(userToBeRemoved: UserData, availableId: Set<number>) {
+  function removeUser(userToBeRemoved: UserData) {
 
-    availableId.add(userToBeRemoved.id);
-    Html_Utils.sortAvailableIdAscending(availableId);
+    let availIdTempStr: string | null = localStorage.getItem("availableIdData");
+
+    let availIdArrayTemp: number[] = [];
+
+    if (availIdTempStr !== null) {
+
+      availIdArrayTemp = JSON.parse(availIdTempStr) as number[];
+
+    }
+
+    availIdArrayTemp.push(userToBeRemoved.id);
+    availIdArrayTemp.sort((a, b) => a - b);
+
+    availableId = new Set<number>(availIdArrayTemp);
+
     localStorage.removeItem("availableIdData");
-    localStorage.setItem("availableIdData", JSON.stringify([...availableId]));
+    localStorage.setItem("availableIdData", JSON.stringify(availIdArrayTemp));
+
     Html_Utils.checkSavedAvailableIdData();
-    let arrayIds = [...availableId];
-    id_input.value = arrayIds[0].toString();
+
+    id_input.value = availIdArrayTemp[0].toString();
+
     userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));

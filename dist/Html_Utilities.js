@@ -20,9 +20,9 @@ function setAvailableId(availableId) {
   let availableIdJsonString = localStorage.getItem("availableIdData");
   if (availableIdJsonString !== null) {
     let availableIdTemp = JSON.parse(availableIdJsonString);
-    console.log(`availableId: ${JSON.stringify(availableId)}`);
-    if (availableIdTemp.size > 0) {
-      availableId = JSON.parse(availableIdJsonString);
+    console.log(`availableId: ${JSON.stringify(availableIdTemp)}`);
+    if (availableIdTemp.length > 0) {
+      availableId = new Set(availableIdTemp);
     }
   }
   return availableId;
@@ -34,6 +34,7 @@ function setUserData(userDataArray, availableId) {
     if (userDataArrayTemp.length > 0) {
       userDataArray = JSON.parse(userDataJsonString);
       availableId = setAvailableId(availableId);
+      checkSavedAvailableIdData();
     } else {
       userDataArray = getData();
       availableId.clear();
@@ -50,7 +51,7 @@ function checkSavedAvailableIdData() {
     if (numArray.length > 0)
       availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
   }
-  console.log(`savedUserData: ${[...availIdNumSet]}`);
+  console.log(`deleted index #s available for reuse: ${[...availIdNumSet]}`);
 }
 const Html_Utils = {
   sortAvailableIdAscending,

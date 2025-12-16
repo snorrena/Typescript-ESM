@@ -59,7 +59,7 @@ function generateHTML() {
       let remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
       remove_button.addEventListener("click", () => {
-        removeUser(user, availableId);
+        removeUser(user);
       });
       id_div2.style.textAlign = "left";
       first_name_div2.style.textAlign = "left";
@@ -106,15 +106,8 @@ function generateHTML() {
   id_input.type = "number";
   id_input.id = "id_input_id";
   if (availableId.size > 0) {
-    Html_Utils.sortAvailableIdAscending(availableId);
     let arrayFromSet = [...availableId];
-    let availableIdFromArray = arrayFromSet.shift();
-    availableId.clear();
-    arrayFromSet.forEach((num) => {
-      availableId.add(num);
-    });
-    if (availableIdFromArray !== void 0)
-      id_input.value = availableIdFromArray.toString();
+    id_input.value = arrayFromSet[0].toString();
   } else {
     id_input.value = (current_id_number + 1).toString();
   }
@@ -184,26 +177,7 @@ function generateHTML() {
   });
   body.appendChild(button_div);
   function add_new_user() {
-    let id = void 0;
-    let idArray = [];
-    let idArrayStr = localStorage.getItem("availableIdData");
-    if (idArrayStr != null) {
-      idArray = JSON.parse(idArrayStr);
-      if (idArray.length > 1) {
-        idArray.sort((a, b) => a - b);
-      }
-      id = idArray.shift();
-      idArray.forEach((num) => {
-        availableId.add(num);
-      });
-      localStorage.removeItem("availableIdData");
-      localStorage.setItem("availableIdData", JSON.stringify(idArray));
-      Html_Utils.checkSavedAvailableIdData();
-    }
-    if (id == void 0) {
-      id = ++current_id_number;
-    }
-    lastUserAddedIndex = id;
+    let id = parseInt(id_input.value);
     let first_name = first_name_input.value;
     let last_name = last_name_input.value;
     if (first_name != "" && last_name != "") {
@@ -216,11 +190,26 @@ function generateHTML() {
       userDataArray.sort((a, b) => a.id - b.id);
       localStorage.removeItem("savedUserData");
       localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
+      lastUserAddedIndex = id;
+      let idArray = [];
+      let idArrayStr = localStorage.getItem("availableIdData");
+      if (idArrayStr != null) {
+        idArray = JSON.parse(idArrayStr);
+        if (idArray.length > 1) {
+          idArray.sort((a, b) => a - b);
+        }
+        if (idArray.indexOf(id) !== -1) {
+          idArray.splice(idArray.indexOf(id), 1);
+          localStorage.removeItem("availableIdData");
+          localStorage.setItem("availableIdData", JSON.stringify(idArray));
+        }
+        Html_Utils.checkSavedAvailableIdData();
+      }
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
       if (idArray.length !== 0) {
-        nextUserId = Math.max(...idArray);
+        nextUserId = idArray[0];
       } else {
         nextUserId = Html_Utils.highestIdNumberInUserArray(userDataArray) + 1;
       }
@@ -228,14 +217,19 @@ function generateHTML() {
       updateUserDataDiv(userDataArray);
     }
   }
-  function removeUser(userToBeRemoved, availableId2) {
-    availableId2.add(userToBeRemoved.id);
-    Html_Utils.sortAvailableIdAscending(availableId2);
+  function removeUser(userToBeRemoved) {
+    let availIdTempStr = localStorage.getItem("availableIdData");
+    let availIdArrayTemp = [];
+    if (availIdTempStr !== null) {
+      availIdArrayTemp = JSON.parse(availIdTempStr);
+    }
+    availIdArrayTemp.push(userToBeRemoved.id);
+    availIdArrayTemp.sort((a, b) => a - b);
+    availableId = new Set(availIdArrayTemp);
     localStorage.removeItem("availableIdData");
-    localStorage.setItem("availableIdData", JSON.stringify([...availableId2]));
+    localStorage.setItem("availableIdData", JSON.stringify(availIdArrayTemp));
     Html_Utils.checkSavedAvailableIdData();
-    let arrayIds = [...availableId2];
-    id_input.value = arrayIds[0].toString();
+    id_input.value = availIdArrayTemp[0].toString();
     userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));

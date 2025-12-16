@@ -34,12 +34,12 @@ function setAvailableId(availableId: Set<number>): Set<number> {
 
   if (availableIdJsonString !== null) {
 
-    let availableIdTemp = JSON.parse(availableIdJsonString) as Set<number>;
-    console.log(`availableId: ${JSON.stringify(availableId)}`);
+    let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
+    console.log(`availableId: ${JSON.stringify(availableIdTemp)}`);
 
-    if (availableIdTemp.size > 0) {
+    if (availableIdTemp.length > 0) {
 
-      availableId = JSON.parse(availableIdJsonString);
+      availableId = new Set<number>(availableIdTemp);
 
     }
 
@@ -62,6 +62,8 @@ function setUserData(userDataArray: UserData[], availableId: Set<number>): { _us
       userDataArray = JSON.parse(userDataJsonString) as UserData[];
 
       availableId = setAvailableId(availableId);
+
+      checkSavedAvailableIdData();
 
 
     } else {
@@ -96,7 +98,7 @@ function checkSavedAvailableIdData(): void {
 
   }
 
-  console.log(`savedUserData: ${[...availIdNumSet]}`);
+  console.log(`deleted index #s available for reuse: ${[...availIdNumSet]}`);
 
 }
 

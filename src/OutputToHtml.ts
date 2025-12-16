@@ -3,14 +3,16 @@ import getData from "./Data.ts";
 
 export function generateHTML() {
 
-  //sets availableId and userDataArray using localStorage if it exists
+  checkSavedAvailableIdData();
+
   let availableId = new Set<number>();
+  //sets availableId and userDataArray using localStorage if it exists
   let availableIdJsonString: string | null = localStorage.getItem("availableIdData");
 
   if (availableIdJsonString !== null) {
 
     let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
-    
+
     if (availableIdTemp.length > 0) {
 
       let availSetTemp: Set<number> = new Set([...availableIdTemp]);
@@ -446,6 +448,8 @@ export function generateHTML() {
       availIdNumSet = new Set([...numArray]);
 
     }
+
+    console.log(`saved availableId data: ${[...availIdNumSet]}`);
 
   }
 

@@ -1,5 +1,6 @@
 import getData from "./Data.js";
 function generateHTML() {
+  checkSavedAvailableIdData();
   let availableId = /* @__PURE__ */ new Set();
   let availableIdJsonString = localStorage.getItem("availableIdData");
   if (availableIdJsonString !== null) {
@@ -275,6 +276,7 @@ function generateHTML() {
       let numArray = JSON.parse(availIdStr);
       availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
     }
+    console.log(`saved availableId data: ${[...availIdNumSet]}`);
   }
 }
 ;

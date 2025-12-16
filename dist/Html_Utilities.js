@@ -41,11 +41,21 @@ function setUserData(userDataArray, availableId) {
   }
   return { _userData: userDataArray, _availableId: availableId };
 }
+function checkSavedAvailableIdData() {
+  let availIdStr = localStorage.getItem("availableIdData");
+  let availIdNumSet = /* @__PURE__ */ new Set();
+  if (availIdStr != null) {
+    let numArray = JSON.parse(availIdStr);
+    if (numArray.length > 0)
+      availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
+  }
+}
 const Html_Utils = {
   sortAvailableIdAscending,
   setCursorFocus,
   highestIdNumberInUserArray,
-  setUserData
+  setUserData,
+  checkSavedAvailableIdData
 };
 var Html_Utilities_default = Html_Utils;
 export {

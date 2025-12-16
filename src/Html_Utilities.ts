@@ -79,12 +79,29 @@ function setUserData(userDataArray: UserData[], availableId: Set<number>): { _us
 
 }
 
+function checkSavedAvailableIdData(): void {
+
+  let availIdStr = localStorage.getItem("availableIdData");
+
+  let availIdNumSet = new Set<number>();
+
+  if (availIdStr != null) {
+
+    let numArray = JSON.parse(availIdStr) as number[];
+
+    if (numArray.length > 0)
+      availIdNumSet = new Set([...numArray]);
+
+  }
+}
+
 const Html_Utils = {
 
   sortAvailableIdAscending,
   setCursorFocus,
   highestIdNumberInUserArray,
-  setUserData
+  setUserData,
+  checkSavedAvailableIdData
 
 }
 

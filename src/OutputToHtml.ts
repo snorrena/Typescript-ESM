@@ -1,46 +1,17 @@
 import type UserData from "./Types.ts";
-import getData from "./Data.ts";
+// import getData from "./Data.ts";
+import Html_Utils from "./Html_Utilities.ts";
 
 export function generateHTML() {
 
-  checkSavedAvailableIdData();
-
   let availableId = new Set<number>();
-  //sets availableId and userDataArray using localStorage if it exists
-  let availableIdJsonString: string | null = localStorage.getItem("availableIdData");
+  let userDataArray: UserData[] = [];
 
-  if (availableIdJsonString !== null) {
+  const { _userData, _availableId } = Html_Utils.setUserData(userDataArray, availableId);
+  availableId = _availableId;
+  userDataArray = _userData;
 
-    let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
-
-    if (availableIdTemp.length > 0) {
-
-      let availSetTemp: Set<number> = new Set([...availableIdTemp]);
-      availableId = availSetTemp;
-
-    }
-
-  }
-
-  let userDataArray: UserData[] = getData();
-  let userDataJsonString: string | null = localStorage.getItem("savedUserData");
-
-  if (userDataJsonString !== null) {
-
-    let userDataArrayTemp = JSON.parse(userDataJsonString) as UserData[];
-
-    if (userDataArrayTemp.length > 0) {
-
-      userDataArray = JSON.parse(userDataJsonString) as UserData[];
-
-    } else {
-
-      availableId.clear();
-      localStorage.removeItem("availableIdData");
-
-    }
-
-  }
+  Html_Utils.checkSavedAvailableIdData();
 
   //store the index of the last added user for highlight in yellow background
   let lastUserAddedIndex: number;
@@ -184,7 +155,7 @@ export function generateHTML() {
     //append the container div to the html document body
     user_data_div.appendChild(container);
 
-    setCursorFocus();
+    Html_Utils.setCursorFocus();
 
   }
 
@@ -223,7 +194,7 @@ export function generateHTML() {
 
   if (availableId.size > 0) {
 
-    sortAvailableIdAscending(availableId);
+    Html_Utils.sortAvailableIdAscending(availableId);
 
     //convert set to array with spread opperator deconstruction. Extract the lowest value. Clear the set and copy the values back to the set in a foreach loop.
     let arrayFromSet = [...availableId];
@@ -331,29 +302,36 @@ export function generateHTML() {
 
   function add_new_user() {
 
-    let id: number;
+    let id: number | undefined = undefined;
+    let idArray: number[] = [];
+    let idArrayStr = localStorage.getItem("availableIdData");
 
-    if (availableId.size >= 1) {
+    if (idArrayStr != null) {
 
-      sortAvailableIdAscending(availableId);
+      idArray = JSON.parse(idArrayStr) as number[];
 
-      let arrayFromSet = [...availableId];
-      id = arrayFromSet.shift() as number;
-      availableId.clear();
-      arrayFromSet.forEach((num) => { availableId.add(num) });
+      if (idArray.length > 1) {
 
+        idArray.sort((a, b) => a - b);
+
+      }
+
+      id = idArray.shift();
+      idArray.forEach((num) => { availableId.add(num) });
       localStorage.removeItem("availableIdData");
-      localStorage.setItem("availableIdData", JSON.stringify(availableId));
+      localStorage.setItem("availableIdData", JSON.stringify(idArray));
 
-      checkSavedAvailableIdData();
+      Html_Utils.checkSavedAvailableIdData();
 
-    } else {
+    }
+
+    if (id == undefined) {
 
       id = ++current_id_number;
 
     }
 
-    lastUserAddedIndex = id;
+    lastUserAddedIndex = id as number;
     let first_name = first_name_input.value;
     let last_name = last_name_input.value;
 
@@ -361,7 +339,7 @@ export function generateHTML() {
 
       let new_user: UserData = {
 
-        id: id,
+        id: id as number,
         firstName: first_name,
         lastName: last_name
 
@@ -376,15 +354,13 @@ export function generateHTML() {
       last_name_input.value = "";
       let nextUserId = 0;
 
-      if (availableId.size !== 0) {
+      if (idArray.length !== 0) {
 
-        let arrayFromSet = [...availableId];
-
-        nextUserId = arrayFromSet[0] as number;
+        nextUserId = Math.max(...idArray);
 
       } else {
 
-        nextUserId = highestIdNumberInUserArray() + 1;
+        nextUserId = Html_Utils.highestIdNumberInUserArray(userDataArray) + 1;
 
       }
 
@@ -394,65 +370,19 @@ export function generateHTML() {
     }
   }
 
-  function highestIdNumberInUserArray(): number {
-
-    userDataArray.sort((a, b) => a.id - b.id);
-    return userDataArray[userDataArray.length - 1].id;
-
-  }
-
   function removeUser(userToBeRemoved: UserData, availableId: Set<number>) {
 
     availableId.add(userToBeRemoved.id);
-    sortAvailableIdAscending(availableId);
+    Html_Utils.sortAvailableIdAscending(availableId);
     localStorage.removeItem("availableIdData");
     localStorage.setItem("availableIdData", JSON.stringify([...availableId]));
-    checkSavedAvailableIdData();
+    Html_Utils.checkSavedAvailableIdData();
     let arrayIds = [...availableId];
     id_input.value = arrayIds[0].toString();
     userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
     updateUserDataDiv(userDataArray);
-
-  }
-
-  function sortAvailableIdAscending(availableId: Set<number>) {
-
-    if (availableId.size > 1) {
-
-      const sortedNumberSet: number[] = Array.from(availableId);
-
-      sortedNumberSet.sort((a, b) => a - b);
-
-      availableId.clear();
-
-      sortedNumberSet.forEach((num) => { availableId.add(num) });
-
-    }
-
-  }
-
-  function setCursorFocus() {
-    document.getElementById("first_name_input_id")?.focus();
-  }
-
-  function checkSavedAvailableIdData(): void {
-
-    let availIdStr = localStorage.getItem("availableIdData");
-
-    let availIdNumSet = new Set<number>();
-
-    if (availIdStr != null) {
-
-      let numArray = JSON.parse(availIdStr) as number[];
-
-      if (numArray.length > 0)
-        availIdNumSet = new Set([...numArray]);
-
-    }
-
-    console.log(`saved availableId data: ${[...availIdNumSet]}`);
 
   }
 

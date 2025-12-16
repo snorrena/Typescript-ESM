@@ -1,26 +1,11 @@
-import getData from "./Data.js";
+import Html_Utils from "./Html_Utilities.js";
 function generateHTML() {
-  checkSavedAvailableIdData();
   let availableId = /* @__PURE__ */ new Set();
-  let availableIdJsonString = localStorage.getItem("availableIdData");
-  if (availableIdJsonString !== null) {
-    let availableIdTemp = JSON.parse(availableIdJsonString);
-    if (availableIdTemp.length > 0) {
-      let availSetTemp = /* @__PURE__ */ new Set([...availableIdTemp]);
-      availableId = availSetTemp;
-    }
-  }
-  let userDataArray = getData();
-  let userDataJsonString = localStorage.getItem("savedUserData");
-  if (userDataJsonString !== null) {
-    let userDataArrayTemp = JSON.parse(userDataJsonString);
-    if (userDataArrayTemp.length > 0) {
-      userDataArray = JSON.parse(userDataJsonString);
-    } else {
-      availableId.clear();
-      localStorage.removeItem("availableIdData");
-    }
-  }
+  let userDataArray = [];
+  const { _userData, _availableId } = Html_Utils.setUserData(userDataArray, availableId);
+  availableId = _availableId;
+  userDataArray = _userData;
+  Html_Utils.checkSavedAvailableIdData();
   let lastUserAddedIndex;
   const body = document.body;
   const heading = document.createElement("h1");
@@ -97,7 +82,7 @@ function generateHTML() {
       container.appendChild(userDataContainer);
     }
     user_data_div.appendChild(container);
-    setCursorFocus();
+    Html_Utils.setCursorFocus();
   }
   updateUserDataDiv(userDataArray);
   const add_new_user_h1 = document.createElement("h1");
@@ -121,7 +106,7 @@ function generateHTML() {
   id_input.type = "number";
   id_input.id = "id_input_id";
   if (availableId.size > 0) {
-    sortAvailableIdAscending(availableId);
+    Html_Utils.sortAvailableIdAscending(availableId);
     let arrayFromSet = [...availableId];
     let availableIdFromArray = arrayFromSet.shift();
     availableId.clear();
@@ -199,19 +184,23 @@ function generateHTML() {
   });
   body.appendChild(button_div);
   function add_new_user() {
-    let id;
-    if (availableId.size >= 1) {
-      sortAvailableIdAscending(availableId);
-      let arrayFromSet = [...availableId];
-      id = arrayFromSet.shift();
-      availableId.clear();
-      arrayFromSet.forEach((num) => {
+    let id = void 0;
+    let idArray = [];
+    let idArrayStr = localStorage.getItem("availableIdData");
+    if (idArrayStr != null) {
+      idArray = JSON.parse(idArrayStr);
+      if (idArray.length > 1) {
+        idArray.sort((a, b) => a - b);
+      }
+      id = idArray.shift();
+      idArray.forEach((num) => {
         availableId.add(num);
       });
       localStorage.removeItem("availableIdData");
-      localStorage.setItem("availableIdData", JSON.stringify(availableId));
-      checkSavedAvailableIdData();
-    } else {
+      localStorage.setItem("availableIdData", JSON.stringify(idArray));
+      Html_Utils.checkSavedAvailableIdData();
+    }
+    if (id == void 0) {
       id = ++current_id_number;
     }
     lastUserAddedIndex = id;
@@ -230,55 +219,27 @@ function generateHTML() {
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId = 0;
-      if (availableId.size !== 0) {
-        let arrayFromSet = [...availableId];
-        nextUserId = arrayFromSet[0];
+      if (idArray.length !== 0) {
+        nextUserId = Math.max(...idArray);
       } else {
-        nextUserId = highestIdNumberInUserArray() + 1;
+        nextUserId = Html_Utils.highestIdNumberInUserArray(userDataArray) + 1;
       }
       id_input.value = nextUserId.toString();
       updateUserDataDiv(userDataArray);
     }
   }
-  function highestIdNumberInUserArray() {
-    userDataArray.sort((a, b) => a.id - b.id);
-    return userDataArray[userDataArray.length - 1].id;
-  }
   function removeUser(userToBeRemoved, availableId2) {
     availableId2.add(userToBeRemoved.id);
-    sortAvailableIdAscending(availableId2);
+    Html_Utils.sortAvailableIdAscending(availableId2);
     localStorage.removeItem("availableIdData");
     localStorage.setItem("availableIdData", JSON.stringify([...availableId2]));
-    checkSavedAvailableIdData();
+    Html_Utils.checkSavedAvailableIdData();
     let arrayIds = [...availableId2];
     id_input.value = arrayIds[0].toString();
     userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
     updateUserDataDiv(userDataArray);
-  }
-  function sortAvailableIdAscending(availableId2) {
-    if (availableId2.size > 1) {
-      const sortedNumberSet = Array.from(availableId2);
-      sortedNumberSet.sort((a, b) => a - b);
-      availableId2.clear();
-      sortedNumberSet.forEach((num) => {
-        availableId2.add(num);
-      });
-    }
-  }
-  function setCursorFocus() {
-    document.getElementById("first_name_input_id")?.focus();
-  }
-  function checkSavedAvailableIdData() {
-    let availIdStr = localStorage.getItem("availableIdData");
-    let availIdNumSet = /* @__PURE__ */ new Set();
-    if (availIdStr != null) {
-      let numArray = JSON.parse(availIdStr);
-      if (numArray.length > 0)
-        availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
-    }
-    console.log(`saved availableId data: ${[...availIdNumSet]}`);
   }
 }
 ;

@@ -345,6 +345,8 @@ export function generateHTML() {
       localStorage.removeItem("availableIdData");
       localStorage.setItem("availableIdData", JSON.stringify(availableId));
 
+      checkSavedAvailableIdData();
+
     } else {
 
       id = ++current_id_number;
@@ -445,7 +447,8 @@ export function generateHTML() {
 
       let numArray = JSON.parse(availIdStr) as number[];
 
-      availIdNumSet = new Set([...numArray]);
+      if (numArray.length > 0)
+        availIdNumSet = new Set([...numArray]);
 
     }
 

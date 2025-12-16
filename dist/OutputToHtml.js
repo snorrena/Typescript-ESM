@@ -210,6 +210,7 @@ function generateHTML() {
       });
       localStorage.removeItem("availableIdData");
       localStorage.setItem("availableIdData", JSON.stringify(availableId));
+      checkSavedAvailableIdData();
     } else {
       id = ++current_id_number;
     }
@@ -274,7 +275,8 @@ function generateHTML() {
     let availIdNumSet = /* @__PURE__ */ new Set();
     if (availIdStr != null) {
       let numArray = JSON.parse(availIdStr);
-      availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
+      if (numArray.length > 0)
+        availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
     }
     console.log(`saved availableId data: ${[...availIdNumSet]}`);
   }

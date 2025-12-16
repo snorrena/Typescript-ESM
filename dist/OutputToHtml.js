@@ -32,7 +32,7 @@ function generateHTML() {
     container2.style.justifyContent = "space-between";
   }
   let current_id_number = 0;
-  function updateUserDataDiv(userDataArray2) {
+  function updateUserDataDiv(userDataArray2, availableId2) {
     id_container.innerHTML = "";
     first_name_container.innerHTML = "";
     last_name_container.innerHTML = "";
@@ -59,7 +59,7 @@ function generateHTML() {
       let remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
       remove_button.addEventListener("click", () => {
-        removeUser(user);
+        removeUser(user, availableId2);
       });
       id_div2.style.textAlign = "left";
       first_name_div2.style.textAlign = "left";
@@ -84,7 +84,7 @@ function generateHTML() {
     user_data_div.appendChild(container);
     Html_Utils.setCursorFocus();
   }
-  updateUserDataDiv(userDataArray);
+  updateUserDataDiv(userDataArray, availableId);
   const add_new_user_h1 = document.createElement("h1");
   add_new_user_h1.innerText = "Add a new user";
   const add_new_user_div = document.createElement("div");
@@ -214,10 +214,10 @@ function generateHTML() {
         nextUserId = Html_Utils.highestIdNumberInUserArray(userDataArray) + 1;
       }
       id_input.value = nextUserId.toString();
-      updateUserDataDiv(userDataArray);
+      updateUserDataDiv(userDataArray, availableId);
     }
   }
-  function removeUser(userToBeRemoved) {
+  function removeUser(userToBeRemoved, availableId2) {
     let availIdTempStr = localStorage.getItem("availableIdData");
     let availIdArrayTemp = [];
     if (availIdTempStr !== null) {
@@ -225,7 +225,7 @@ function generateHTML() {
     }
     availIdArrayTemp.push(userToBeRemoved.id);
     availIdArrayTemp.sort((a, b) => a - b);
-    availableId = new Set(availIdArrayTemp);
+    availableId2 = new Set(availIdArrayTemp);
     localStorage.removeItem("availableIdData");
     localStorage.setItem("availableIdData", JSON.stringify(availIdArrayTemp));
     Html_Utils.checkSavedAvailableIdData();
@@ -233,7 +233,7 @@ function generateHTML() {
     userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
-    updateUserDataDiv(userDataArray);
+    updateUserDataDiv(userDataArray, availableId2);
   }
 }
 ;

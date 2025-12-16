@@ -17,6 +17,7 @@ export function generateHTML() {
 
   //get the body element and add an underlined heading
   const body = document.body;
+
   const heading = document.createElement("h1");
   heading.innerHTML = "User Data";
   body.appendChild(heading);
@@ -58,7 +59,7 @@ export function generateHTML() {
   //initialize and set the current user index #
   let current_id_number = 0;
 
-  function updateUserDataDiv(userDataArray: UserData[]) {
+  function updateUserDataDiv(userDataArray: UserData[], availableId: Set<number>) {
 
     //clear the data containers to avoid duplicate data when adding a new user
     id_container.innerHTML = "";
@@ -110,7 +111,7 @@ export function generateHTML() {
 
       remove_button.addEventListener("click", () => {
 
-        removeUser(user);
+        removeUser(user, availableId);
 
       });
 
@@ -159,7 +160,7 @@ export function generateHTML() {
   }
 
   //this is the call of the function defined above
-  updateUserDataDiv(userDataArray);
+  updateUserDataDiv(userDataArray, availableId);
 
   //create a heading for the add new user form
   const add_new_user_h1 = document.createElement("h1");
@@ -359,12 +360,12 @@ export function generateHTML() {
       }
 
       id_input.value = nextUserId.toString();
-      updateUserDataDiv(userDataArray);
+      updateUserDataDiv(userDataArray, availableId);
 
     }
   }
 
-  function removeUser(userToBeRemoved: UserData) {
+  function removeUser(userToBeRemoved: UserData, availableId: Set<number>) {
 
     let availIdTempStr: string | null = localStorage.getItem("availableIdData");
 
@@ -391,7 +392,7 @@ export function generateHTML() {
     userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
-    updateUserDataDiv(userDataArray);
+    updateUserDataDiv(userDataArray, availableId);
 
   }
 

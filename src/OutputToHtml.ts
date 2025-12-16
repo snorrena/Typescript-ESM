@@ -1,5 +1,4 @@
 import type UserData from "./Types.ts";
-// import getData from "./Data.ts";
 import Html_Utils from "./Html_Utilities.ts";
 
 export function generateHTML() {

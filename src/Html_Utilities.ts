@@ -30,8 +30,8 @@ function initUserDataDiv(GLOBAL_HTML_ELEMENTS: GLOBAL_HTML_Elements) {
     container.style.border = "1px solid black";
     container.style.padding = "10px";
 
-    //each data container is set as flex row with the data itemms evenly spaced between
-    //the data containers are added to an array to add the required style attributs to all via a for loop
+    //each data container is set as flex row with the data items evenly spaced between
+    //the data containers are added to an array to add the required style attributes to all via a for loop
     const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
 
     for (let container of data_containers) {
@@ -126,7 +126,6 @@ function setUserData(userDataArray: UserName[], availableId: Set<number>): {
 
     }
 
-
     return {_userData: userDataArray, _availableId: availableId};
 
 }
@@ -150,6 +149,47 @@ function checkSavedAvailableIdData(): void {
 
 }
 
+function removeUserIdFromSavedIdData(id: number): number[] {
+
+    //update the array of available user id number
+    let idArray: number[] = [];
+    let idArrayStr = localStorage.getItem("availableIdData");
+
+    if (idArrayStr != null) {
+
+        idArray = JSON.parse(idArrayStr) as number[];
+
+        if (idArray.length > 1) {
+
+            idArray.sort((a, b) => a - b);
+
+        }
+
+        if (idArray.indexOf(id) !== -1) {
+
+            idArray.splice(idArray.indexOf(id), 1);
+            localStorage.removeItem("availableIdData");
+            localStorage.setItem("availableIdData", JSON.stringify(idArray));
+
+        }
+
+        Html_Utils.checkSavedAvailableIdData();
+
+    }
+
+    return idArray;
+
+}
+
+function saveNewUserToLocalStorage(user: UserName, userDataArray: UserName[]): void {
+
+    userDataArray.push(user);
+    userDataArray.sort((a, b) => a.id - b.id);
+    localStorage.removeItem("savedUserData");
+    localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
+
+}
+
 const Html_Utils = {
 
     sortAvailableIdAscending,
@@ -157,7 +197,9 @@ const Html_Utils = {
     highestIdNumberInUserArray,
     setUserData,
     checkSavedAvailableIdData,
-    initUserDataDiv
+    initUserDataDiv,
+    removeUserIdFromSavedIdData,
+    saveNewUserToLocalStorage
 
 }
 

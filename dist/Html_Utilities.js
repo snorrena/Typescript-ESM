@@ -81,13 +81,38 @@ function checkSavedAvailableIdData() {
   }
   console.log(`deleted index #s available for reuse: ${[...availIdNumSet]}`);
 }
+function removeUserIdFromSavedIdData(id) {
+  let idArray = [];
+  let idArrayStr = localStorage.getItem("availableIdData");
+  if (idArrayStr != null) {
+    idArray = JSON.parse(idArrayStr);
+    if (idArray.length > 1) {
+      idArray.sort((a, b) => a - b);
+    }
+    if (idArray.indexOf(id) !== -1) {
+      idArray.splice(idArray.indexOf(id), 1);
+      localStorage.removeItem("availableIdData");
+      localStorage.setItem("availableIdData", JSON.stringify(idArray));
+    }
+    Html_Utils.checkSavedAvailableIdData();
+  }
+  return idArray;
+}
+function saveNewUserToLocalStorage(user, userDataArray) {
+  userDataArray.push(user);
+  userDataArray.sort((a, b) => a.id - b.id);
+  localStorage.removeItem("savedUserData");
+  localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
+}
 const Html_Utils = {
   sortAvailableIdAscending,
   setCursorFocus,
   highestIdNumberInUserArray,
   setUserData,
   checkSavedAvailableIdData,
-  initUserDataDiv
+  initUserDataDiv,
+  removeUserIdFromSavedIdData,
+  saveNewUserToLocalStorage
 };
 var Html_Utilities_default = Html_Utils;
 export {

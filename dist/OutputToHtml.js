@@ -15,7 +15,15 @@ function generateHTML() {
   const first_name_container = document.createElement("div");
   const last_name_container = document.createElement("div");
   const remove_button_container = document.createElement("div");
-  const GLOBAL_HTML_ELEMENTS = { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container };
+  const GLOBAL_HTML_ELEMENTS = {
+    _body: body,
+    _user_data_div: user_data_div,
+    _container: container,
+    _id_container: id_container,
+    _first_name_container: first_name_container,
+    _last_name_container: last_name_container,
+    _remove_button_container: remove_button_container
+  };
   Html_Utils.initUserDataDiv(GLOBAL_HTML_ELEMENTS);
   function updateUserDataDiv(userDataArray2, availableId2) {
     id_container.innerHTML = "";
@@ -171,30 +179,14 @@ function generateHTML() {
         firstName: first_name,
         lastName: last_name
       };
-      userDataArray.push(new_user);
-      userDataArray.sort((a, b) => a.id - b.id);
-      localStorage.removeItem("savedUserData");
-      localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
+      Html_Utils.saveNewUserToLocalStorage(new_user, userDataArray);
       lastUserAddedIndex = id;
-      let idArray = [];
-      let idArrayStr = localStorage.getItem("availableIdData");
-      if (idArrayStr != null) {
-        idArray = JSON.parse(idArrayStr);
-        if (idArray.length > 1) {
-          idArray.sort((a, b) => a - b);
-        }
-        if (idArray.indexOf(id) !== -1) {
-          idArray.splice(idArray.indexOf(id), 1);
-          localStorage.removeItem("availableIdData");
-          localStorage.setItem("availableIdData", JSON.stringify(idArray));
-        }
-        Html_Utils.checkSavedAvailableIdData();
-      }
+      let updatedIdArray = Html_Utils.removeUserIdFromSavedIdData(id);
       first_name_input.value = "";
       last_name_input.value = "";
       let nextUserId;
-      if (idArray.length !== 0) {
-        nextUserId = idArray[0];
+      if (updatedIdArray.length !== 0) {
+        nextUserId = updatedIdArray[0];
       } else {
         nextUserId = Html_Utils.highestIdNumberInUserArray(userDataArray) + 1;
       }

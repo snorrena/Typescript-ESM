@@ -1,4 +1,4 @@
-import type {UserName} from "./Types.ts";
+import type { UserName } from "./Types.ts";
 import type { GLOBAL_HTML_Elements } from "./Types.ts";
 import Html_Utils from "./Html_Utilities.ts";
 
@@ -24,7 +24,7 @@ export function generateHTML() {
   const last_name_container = document.createElement("div");
   const remove_button_container = document.createElement("div");
 
-  const GLOBAL_HTML_ELEMENTS:GLOBAL_HTML_Elements = { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container }
+  const GLOBAL_HTML_ELEMENTS: GLOBAL_HTML_Elements = { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container }
   const GLOBAL_VARIABLES = { _lastUserAddedIndex: lastUserAddedIndex, _current_id_number: current_id_number }
 
   Html_Utils.initUserDataDiv(GLOBAL_HTML_ELEMENTS);

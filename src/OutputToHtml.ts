@@ -4,7 +4,8 @@ import Html_Utils from "./Html_Utilities.ts";
 
 export function generateHTML() {
 
-  let availableId = new Set<number>();
+    //region initialization of variables and html elements in the user data div
+    let availableId = new Set<number>();
   let userDataArray: UserName[] = [];
 
   const { _userData, _availableId } = Html_Utils.setUserData(userDataArray, availableId);
@@ -28,8 +29,10 @@ export function generateHTML() {
   // const GLOBAL_VARIABLES = { _lastUserAddedIndex: lastUserAddedIndex, _current_id_number: current_id_number }
 
     Html_Utils.initUserDataDiv(GLOBAL_HTML_ELEMENTS);
+    //endregion
 
-  function updateUserDataDiv(userDataArray: UserName[], availableId: Set<number>) {
+    //region function to update the user data div with current data in the user data array
+    function updateUserDataDiv(userDataArray: UserName[], availableId: Set<number>) {
 
     //clear the data containers to avoid duplicate data when adding a new user
     id_container.innerHTML = "";
@@ -131,11 +134,11 @@ export function generateHTML() {
 
   //this is the call of the function defined above
   updateUserDataDiv(userDataArray, availableId);
+    //endregion
 
-  //create a heading for the add new user form
-  const add_new_user_h1 = document.createElement("h1");
+    //region create the add new user form elements
+    const add_new_user_h1 = document.createElement("h1");
   add_new_user_h1.innerText = "Add a new user";
-  // add_new_user_h2.style.textDecoration = "underline";
 
   //create a div to contain the add new user form
   const add_new_user_div = document.createElement("div");
@@ -262,8 +265,10 @@ export function generateHTML() {
   });
 
   body.appendChild(button_div);
+    //endregion
 
-  function add_new_user() {
+    //region function to add a new user to the user data array
+    function add_new_user() {
 
     //creat a new user obj and added to collection
     let id: number = parseInt(id_input.value);
@@ -334,8 +339,10 @@ export function generateHTML() {
 
     }
   }
+    //endregion
 
-  function removeUser(userToBeRemoved: UserName, availableId: Set<number>) {
+    //region function to remove a user from the user data array
+    function removeUser(userToBeRemoved: UserName, availableId: Set<number>) {
 
     let availIdTempStr: string | null = localStorage.getItem("availableIdData");
 
@@ -365,5 +372,6 @@ export function generateHTML() {
     updateUserDataDiv(userDataArray, availableId);
 
   }
+    //endregion
 
 }

@@ -40,7 +40,7 @@ export function generateHTML() {
     //endregion
 
     //region function to update the user data div with current data in the user data array
-    function updateUserDataDiv(userDataArray: UserName[], availableId: Set<number>) {
+    function updateUserDataDiv() {
 
         //clear the data containers to avoid duplicate data when adding a new user
         id_container.innerHTML = "";
@@ -140,7 +140,7 @@ export function generateHTML() {
 
     }
 
-    updateUserDataDiv(userDataArray, availableId);
+    updateUserDataDiv();
     //endregion
 
     //region create the add new user form elements
@@ -317,7 +317,7 @@ export function generateHTML() {
 
             id_input.value = nextUserId.toString();
 
-            updateUserDataDiv(userDataArray, availableId);
+            updateUserDataDiv();
 
         }
     }
@@ -352,7 +352,7 @@ export function generateHTML() {
         userDataArray.splice(userDataArray.findIndex(user => user.id === userToBeRemoved.id), 1)
         localStorage.removeItem("savedUserData");
         localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
-        updateUserDataDiv(userDataArray, availableId);
+        updateUserDataDiv();
 
     }
 

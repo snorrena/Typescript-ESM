@@ -16,7 +16,6 @@ function generateHTML() {
   const last_name_container = document.createElement("div");
   const remove_button_container = document.createElement("div");
   const GLOBAL_HTML_ELEMENTS = { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container };
-  const GLOBAL_VARIABLES = { _lastUserAddedIndex: lastUserAddedIndex, _current_id_number: current_id_number };
   Html_Utils.initUserDataDiv(GLOBAL_HTML_ELEMENTS);
   function updateUserDataDiv(userDataArray2, availableId2) {
     id_container.innerHTML = "";

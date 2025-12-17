@@ -1,6 +1,14 @@
 import getData from "./Data.js";
 function initUserDataDiv(GLOBAL_HTML_ELEMENTS) {
-  const { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container } = GLOBAL_HTML_ELEMENTS;
+  const {
+    _body: body,
+    _user_data_div: user_data_div,
+    _container: container,
+    _id_container: id_container,
+    _first_name_container: first_name_container,
+    _last_name_container: last_name_container,
+    _remove_button_container: remove_button_container
+  } = GLOBAL_HTML_ELEMENTS;
   const heading = document.createElement("h1");
   heading.innerHTML = "User Data";
   body.appendChild(heading);

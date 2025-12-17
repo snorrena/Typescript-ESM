@@ -6,32 +6,18 @@ function generateHTML() {
   availableId = _availableId;
   userDataArray = _userData;
   Html_Utils.checkSavedAvailableIdData();
-  let lastUserAddedIndex;
   const body = document.body;
-  const heading = document.createElement("h1");
-  heading.innerHTML = "User Data";
-  body.appendChild(heading);
-  const user_data_div = document.createElement("div");
-  user_data_div.id = "user_data_div_id";
-  body.appendChild(user_data_div);
-  let container = document.createElement("div");
-  container.style.display = "flex";
-  container.style.flexDirection = "row";
-  container.style.justifyContent = "space-between";
-  container.style.width = "26%";
-  container.style.border = "1px solid black";
-  container.style.padding = "10px";
-  let id_container = document.createElement("div");
-  let first_name_container = document.createElement("div");
-  let last_name_container = document.createElement("div");
-  let remove_button_container = document.createElement("div");
-  const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
-  for (let container2 of data_containers) {
-    container2.style.display = "flex";
-    container2.style.flexDirection = "column";
-    container2.style.justifyContent = "space-between";
-  }
+  let lastUserAddedIndex = void 0;
   let current_id_number = 0;
+  const user_data_div = document.createElement("div");
+  const container = document.createElement("div");
+  const id_container = document.createElement("div");
+  const first_name_container = document.createElement("div");
+  const last_name_container = document.createElement("div");
+  const remove_button_container = document.createElement("div");
+  const GLOBAL_HTML_ELEMENTS = { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container };
+  const GLOBAL_VARIABLES = { _lastUserAddedIndex: lastUserAddedIndex, _current_id_number: current_id_number };
+  Html_Utils.initUserDataDiv(GLOBAL_HTML_ELEMENTS);
   function updateUserDataDiv(userDataArray2, availableId2) {
     id_container.innerHTML = "";
     first_name_container.innerHTML = "";
@@ -207,7 +193,7 @@ function generateHTML() {
       }
       first_name_input.value = "";
       last_name_input.value = "";
-      let nextUserId = 0;
+      let nextUserId;
       if (idArray.length !== 0) {
         nextUserId = idArray[0];
       } else {
@@ -236,7 +222,6 @@ function generateHTML() {
     updateUserDataDiv(userDataArray, availableId2);
   }
 }
-;
 export {
   generateHTML
 };

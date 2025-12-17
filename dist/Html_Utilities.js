@@ -1,4 +1,24 @@
 import getData from "./Data.js";
+function initUserDataDiv(GLOBAL_HTML_ELEMENTS) {
+  const { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container } = GLOBAL_HTML_ELEMENTS;
+  const heading = document.createElement("h1");
+  heading.innerHTML = "User Data";
+  body.appendChild(heading);
+  user_data_div.id = "user_data_div_id";
+  body.appendChild(user_data_div);
+  container.style.display = "flex";
+  container.style.flexDirection = "row";
+  container.style.justifyContent = "space-between";
+  container.style.width = "26%";
+  container.style.border = "1px solid black";
+  container.style.padding = "10px";
+  const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
+  for (let container2 of data_containers) {
+    container2.style.display = "flex";
+    container2.style.flexDirection = "column";
+    container2.style.justifyContent = "space-between";
+  }
+}
 function sortAvailableIdAscending(availableId) {
   if (availableId.size > 1) {
     const sortedNumberSet = Array.from(availableId);
@@ -58,7 +78,8 @@ const Html_Utils = {
   setCursorFocus,
   highestIdNumberInUserArray,
   setUserData,
-  checkSavedAvailableIdData
+  checkSavedAvailableIdData,
+  initUserDataDiv
 };
 var Html_Utilities_default = Html_Utils;
 export {

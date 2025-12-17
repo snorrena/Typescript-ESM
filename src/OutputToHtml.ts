@@ -1,10 +1,11 @@
-import type UserData from "./Types.ts";
+import type {UserName} from "./Types.ts";
+import type { GLOBAL_HTML_Elements } from "./Types.ts";
 import Html_Utils from "./Html_Utilities.ts";
 
 export function generateHTML() {
 
   let availableId = new Set<number>();
-  let userDataArray: UserData[] = [];
+  let userDataArray: UserName[] = [];
 
   const { _userData, _availableId } = Html_Utils.setUserData(userDataArray, availableId);
   availableId = _availableId;
@@ -12,54 +13,23 @@ export function generateHTML() {
 
   Html_Utils.checkSavedAvailableIdData();
 
-  //store the index of the last added user for highlight in yellow background
-  let lastUserAddedIndex: number;
-
-  //get the body element and add an underlined heading
+  //global variables
   const body = document.body;
-
-  const heading = document.createElement("h1");
-  heading.innerHTML = "User Data";
-  body.appendChild(heading);
-
-  //create the main div to contain all user data elements
+  let lastUserAddedIndex: number | undefined = undefined;
+  let current_id_number: number = 0;
   const user_data_div = document.createElement("div");
-  user_data_div.id = "user_data_div_id";
-  body.appendChild(user_data_div);
+  const container = document.createElement("div");
+  const id_container = document.createElement("div");
+  const first_name_container = document.createElement("div");
+  const last_name_container = document.createElement("div");
+  const remove_button_container = document.createElement("div");
 
-  //the container element uses display flex to house three data sections evenly space on 25% of the screen
-  let container = document.createElement("div");
-  container.style.display = "flex";
-  container.style.flexDirection = "row";
-  container.style.justifyContent = "space-between";
-  container.style.width = "26%";
-  container.style.border = "1px solid black";
-  container.style.padding = "10px";
+  const GLOBAL_HTML_ELEMENTS:GLOBAL_HTML_Elements = { _body: body, _user_data_div: user_data_div, _container: container, _id_container: id_container, _first_name_container: first_name_container, _last_name_container: last_name_container, _remove_button_container: remove_button_container }
+  const GLOBAL_VARIABLES = { _lastUserAddedIndex: lastUserAddedIndex, _current_id_number: current_id_number }
 
-  //these containers will hold the array data fields of id, first name and last name
-  let id_container = document.createElement("div");
-  let first_name_container = document.createElement("div");
-  let last_name_container = document.createElement("div");
+  Html_Utils.initUserDataDiv(GLOBAL_HTML_ELEMENTS);
 
-  //this container will  hold the remove buttons for each user line item
-  let remove_button_container = document.createElement("div");
-
-  //each data container is set as flex row with the data itemms evenly spaced between
-  //the data containers are added to an array to add the required style attributs to all via a for loop
-  const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
-
-  for (let container of data_containers) {
-
-    container.style.display = "flex";
-    container.style.flexDirection = "column";
-    container.style.justifyContent = "space-between";
-
-  }
-
-  //initialize and set the current user index #
-  let current_id_number = 0;
-
-  function updateUserDataDiv(userDataArray: UserData[], availableId: Set<number>) {
+  function updateUserDataDiv(userDataArray: UserName[], availableId: Set<number>) {
 
     //clear the data containers to avoid duplicate data when adding a new user
     id_container.innerHTML = "";
@@ -81,7 +51,7 @@ export function generateHTML() {
       let remove_button_div = document.createElement("div");
 
       //added the data divs to an array. Iterate over the array to add a margin bottom to each
-      //and highlight an last added user with a yellow background colour
+      //and highlight the last added user with a yellow background colour
       const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
 
       for (let data_div of data_divs) {
@@ -131,7 +101,7 @@ export function generateHTML() {
       last_name_div.appendChild(last_name_text);
       remove_button_div.appendChild(remove_button);
 
-      //the data divs are then added to the coresponding containers
+      //the data divs are then added to the corresponding containers
       id_container.appendChild(id_div);
       first_name_container.appendChild(first_name_div);
       last_name_container.appendChild(last_name_div);
@@ -142,7 +112,7 @@ export function generateHTML() {
     //this array will store each data container elements including the array data
     let dataItemsArray: HTMLElement[] = [];
 
-    //the container are pushed onto an array
+    //the container is pushed onto an array
     dataItemsArray.push(id_container, first_name_container, last_name_container, remove_button_container);
 
     //iterate over the elements array and append all to the master container div
@@ -303,7 +273,7 @@ export function generateHTML() {
 
     if (first_name != "" && last_name != "") {
 
-      let new_user: UserData = {
+      let new_user: UserName = {
 
         id: id,
         firstName: first_name,
@@ -347,7 +317,7 @@ export function generateHTML() {
       first_name_input.value = "";
       last_name_input.value = "";
 
-      let nextUserId = 0;
+      let nextUserId;
 
       if (idArray.length !== 0) {
 
@@ -365,7 +335,7 @@ export function generateHTML() {
     }
   }
 
-  function removeUser(userToBeRemoved: UserData, availableId: Set<number>) {
+  function removeUser(userToBeRemoved: UserName, availableId: Set<number>) {
 
     let availIdTempStr: string | null = localStorage.getItem("availableIdData");
 
@@ -396,4 +366,4 @@ export function generateHTML() {
 
   }
 
-};
+}

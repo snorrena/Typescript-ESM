@@ -1,5 +1,5 @@
 //the user name type is imported for use in the type definitions in data 
-import type UserName from "./Types.ts"
+import type {UserName} from "./Types.ts"
 
 const getData = function(): UserName[] {
 

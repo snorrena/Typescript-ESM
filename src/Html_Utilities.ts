@@ -15,10 +15,14 @@ function initUserDataDiv(GLOBAL_HTML_ELEMENTS: GLOBAL_HTML_Elements) {
 
     const heading = document.createElement("h1");
     heading.innerHTML = "User Data";
+    heading.style.textAlign = "center";
     body.appendChild(heading);
 
     //create the main div to contain all user data elements
     user_data_div.id = "user_data_div_id";
+    user_data_div.style.display = 'flex';
+    user_data_div.style.justifyContent = 'center'; // Centers horizontally
+    user_data_div.style.alignItems = 'center';     // Centers vertically
     body.appendChild(user_data_div);
 
     //the container element uses display flex to house three data sections evenly space on 25% of the screen

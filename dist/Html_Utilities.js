@@ -11,8 +11,12 @@ function initUserDataDiv(GLOBAL_HTML_ELEMENTS) {
   } = GLOBAL_HTML_ELEMENTS;
   const heading = document.createElement("h1");
   heading.innerHTML = "User Data";
+  heading.style.textAlign = "center";
   body.appendChild(heading);
   user_data_div.id = "user_data_div_id";
+  user_data_div.style.display = "flex";
+  user_data_div.style.justifyContent = "center";
+  user_data_div.style.alignItems = "center";
   body.appendChild(user_data_div);
   container.style.display = "flex";
   container.style.flexDirection = "row";

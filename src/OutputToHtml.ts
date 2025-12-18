@@ -92,7 +92,7 @@ export function generateHTML() {
 
             remove_button.addEventListener("click", () => {
 
-                removeUser(user, availableId);
+                removeUser(user);
 
             });
 
@@ -325,7 +325,7 @@ export function generateHTML() {
     //endregion
 
     //region function to remove a user from the user data array
-    function removeUser(userToBeRemoved: UserName, availableId: Set<number>) {
+    function removeUser(userToBeRemoved: UserName) {
 
         let availIdTempStr: string | null = localStorage.getItem("availableIdData");
 

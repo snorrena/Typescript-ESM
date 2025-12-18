@@ -52,7 +52,7 @@ function generateHTML() {
       let remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
       remove_button.addEventListener("click", () => {
-        removeUser(user, availableId);
+        removeUser(user);
       });
       id_div2.style.textAlign = "left";
       first_name_div2.style.textAlign = "left";
@@ -194,7 +194,7 @@ function generateHTML() {
       updateUserDataDiv();
     }
   }
-  function removeUser(userToBeRemoved, availableId2) {
+  function removeUser(userToBeRemoved) {
     let availIdTempStr = localStorage.getItem("availableIdData");
     let availIdArrayTemp = [];
     if (availIdTempStr !== null) {
@@ -202,7 +202,7 @@ function generateHTML() {
     }
     availIdArrayTemp.push(userToBeRemoved.id);
     availIdArrayTemp.sort((a, b) => a - b);
-    availableId2 = new Set(availIdArrayTemp);
+    availableId = new Set(availIdArrayTemp);
     localStorage.removeItem("availableIdData");
     localStorage.setItem("availableIdData", JSON.stringify(availIdArrayTemp));
     Html_Utils.checkSavedAvailableIdData();

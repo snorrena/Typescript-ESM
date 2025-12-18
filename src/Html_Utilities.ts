@@ -118,7 +118,6 @@ function setUserData(userDataArray: UserName[], availableId: Set<number>): {
 
             checkSavedAvailableIdData();
 
-
         } else {
 
             userDataArray = getData();

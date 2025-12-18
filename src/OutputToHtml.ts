@@ -34,7 +34,6 @@ export function generateHTML() {
         _last_name_container: last_name_container,
         _remove_button_container: remove_button_container
     }
-    // const GLOBAL_VARIABLES = { _lastUserAddedIndex: lastUserAddedIndex, _current_id_number: current_id_number }
 
     Html_Utils.initUserDataDiv(GLOBAL_HTML_ELEMENTS);
     //endregion

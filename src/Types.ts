@@ -3,7 +3,6 @@ export type UserName = {
   firstName: string;
   lastName: string;
 }
-//export type { UserName as default }
 
 export type GLOBAL_HTML_Elements = {
     _body: HTMLElement;

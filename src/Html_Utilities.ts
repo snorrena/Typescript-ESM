@@ -1,7 +1,6 @@
 import type {UserName, GLOBAL_HTML_Elements} from "./Types.ts";
 import getData from "./Data.ts";
 
-// function initUserDataDiv(body: HTMLElement, user_data_div: HTMLElement, container: HTMLElement, id_container: HTMLElement, first_name_container: HTMLElement, last_name_container: HTMLElement, remove_button_container: HTMLElement) {
 function initUserDataDiv(GLOBAL_HTML_ELEMENTS: GLOBAL_HTML_Elements) {
 
     const {
@@ -69,6 +68,7 @@ function setCursorFocus() {
 function highestIdNumberInUserArray(userDataArray: UserName[]): number {
 
     userDataArray.sort((a, b) => a.id - b.id);
+
     return userDataArray[userDataArray.length - 1].id;
 
 }
@@ -80,6 +80,7 @@ function setAvailableId(availableId: Set<number>): Set<number> {
     if (availableIdJsonString !== null) {
 
         let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
+
         console.log(`availableId: ${JSON.stringify(availableIdTemp)}`);
 
         if (availableIdTemp.length > 0) {
@@ -184,7 +185,9 @@ function removeUserIdFromSavedIdData(id: number): number[] {
 function saveNewUserToLocalStorage(user: UserName, userDataArray: UserName[]): void {
 
     userDataArray.push(user);
+
     userDataArray.sort((a, b) => a.id - b.id);
+
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
 

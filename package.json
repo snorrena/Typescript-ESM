@@ -2,9 +2,14 @@
   "name": "deno-test",
   "version": "1.0.0",
   "main": "",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "cy:open": "cypress open",
+    "test1": "pnpx cypress run",
+    "cypress:open": "pnpx cypress open",
+    "cy:run:chrome": "pnpx cypress run --browser chrome",
+    "cy:run:headless": "pnpx cypress run --headless",
     "obfuscate": "javascript-obfuscator dist --output obfuscated --ignore-imports true",
     "esbuild": "esbuild src/**/*.ts --outdir=dist --format=esm --platform=neutral --allow-overwrite",
     "typecheck": "tsc || exit 0",
@@ -18,5 +23,8 @@
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "cypress": "^15.8.1"
+  }
 }

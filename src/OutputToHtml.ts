@@ -88,6 +88,7 @@ export function generateHTML() {
             //create a remove button and add an event listener to remove the current user on click
             let remove_button = document.createElement("button");
             remove_button.innerText = "Remove";
+            remove_button.id = user.id.toString();
 
             remove_button.addEventListener("click", () => {
 
@@ -202,6 +203,7 @@ export function generateHTML() {
     first_name_input.setAttribute("type", "string");
     first_name_input.id = "first_name_input_id";
     first_name_input.style.width = "50%"
+    first_name_input.id = "first_name";
 
     const first_name_div = document.createElement("div");
     first_name_div.style.display = "flex";
@@ -222,6 +224,7 @@ export function generateHTML() {
     last_name_input.setAttribute("type", "string");
     last_name_input.id = "last_name_input_id";
     last_name_input.style.width = "50%";
+    last_name_input.id = "last_name";
 
     const last_name_div = document.createElement("div");
     last_name_div.style.display = "flex";
@@ -243,6 +246,7 @@ export function generateHTML() {
     button.innerText = "Add User";
     button.style.display = "block"
     button.style.margin = "0 auto";
+    button.id = "add_user";
     body.appendChild(button);
 
     button.addEventListener("click", () => {

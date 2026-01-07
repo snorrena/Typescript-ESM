@@ -71,7 +71,12 @@ function generateHTML() {
       remove_button_container.appendChild(remove_button_div);
     });
     let dataItemsArray = [];
-    dataItemsArray.push(id_container, first_name_container, last_name_container, remove_button_container);
+    dataItemsArray.push(
+      id_container,
+      first_name_container,
+      last_name_container,
+      remove_button_container
+    );
     for (let userDataContainer of dataItemsArray) {
       container.appendChild(userDataContainer);
     }
@@ -205,7 +210,10 @@ function generateHTML() {
     localStorage.setItem("availableIdData", JSON.stringify(availIdArrayTemp));
     Html_Utils.checkSavedAvailableIdData();
     id_input.value = availIdArrayTemp[0].toString();
-    userDataArray.splice(userDataArray.findIndex((user) => user.id === userToBeRemoved.id), 1);
+    userDataArray.splice(
+      userDataArray.findIndex((user) => user.id === userToBeRemoved.id),
+      1
+    );
     localStorage.removeItem("savedUserData");
     localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
     updateUserDataDiv();

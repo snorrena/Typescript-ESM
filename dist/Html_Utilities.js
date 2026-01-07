@@ -24,7 +24,12 @@ function initUserDataDiv(GLOBAL_HTML_ELEMENTS) {
   container.style.width = "26%";
   container.style.border = "1px solid black";
   container.style.padding = "10px";
-  const data_containers = [id_container, first_name_container, last_name_container, remove_button_container];
+  const data_containers = [
+    id_container,
+    first_name_container,
+    last_name_container,
+    remove_button_container
+  ];
   for (let container2 of data_containers) {
     container2.style.display = "flex";
     container2.style.flexDirection = "column";
@@ -80,8 +85,7 @@ function checkSavedAvailableIdData() {
   let availIdNumSet = /* @__PURE__ */ new Set();
   if (availIdStr != null) {
     let numArray = JSON.parse(availIdStr);
-    if (numArray.length > 0)
-      availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
+    if (numArray.length > 0) availIdNumSet = /* @__PURE__ */ new Set([...numArray]);
   }
   console.log(`deleted index #s available for reuse: ${[...availIdNumSet]}`);
 }

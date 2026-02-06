@@ -55,10 +55,10 @@ export function generateHTML() {
       current_id_number = user.id;
 
       //here we create containers for each data item in the user object
-      let id_div = document.createElement("div");
-      let first_name_div = document.createElement("div");
-      let last_name_div = document.createElement("div");
-      let remove_button_div = document.createElement("div");
+      const id_div = document.createElement("div");
+      const first_name_div = document.createElement("div");
+      const last_name_div = document.createElement("div");
+      const remove_button_div = document.createElement("div");
 
       //added the data divs to an array. Iterate over the array to add a margin bottom to each
       //and highlight the last added user with a yellow background colour
@@ -69,7 +69,7 @@ export function generateHTML() {
         remove_button_div,
       ];
 
-      for (let data_div of data_divs) {
+      for (const data_div of data_divs) {
         // data_div.style.marginBottom = "5px";
         data_div.style.display = "flex";
         data_div.style.alignItems = "center";
@@ -85,7 +85,7 @@ export function generateHTML() {
       }
 
       //create a remove button and add an event listener to remove the current user on click
-      let remove_button = document.createElement("button");
+      const remove_button = document.createElement("button");
       remove_button.innerText = "Remove";
       remove_button.id = user.id.toString();
 
@@ -99,11 +99,11 @@ export function generateHTML() {
       last_name_div.style.textAlign = "left";
 
       //interpolation is used here to create text nodes including the user object data items
-      let id_text = document.createTextNode(`Id:  ${user.id}`);
-      let first_name_text = document.createTextNode(
+      const id_text = document.createTextNode(`Id:  ${user.id}`);
+      const first_name_text = document.createTextNode(
         `First name:  ${user.firstName}`,
       );
-      let last_name_text = document.createTextNode(
+      const last_name_text = document.createTextNode(
         `Last name:  ${user.lastName}`,
       );
 
@@ -121,7 +121,7 @@ export function generateHTML() {
     });
 
     //this array will store each data container elements including the array data
-    let dataItemsArray: HTMLElement[] = [];
+    const dataItemsArray: HTMLElement[] = [];
 
     //the container is pushed onto an array
     dataItemsArray.push(
@@ -132,7 +132,7 @@ export function generateHTML() {
     );
 
     //iterate over the elements array and append all to the master container div
-    for (let userDataContainer of dataItemsArray) {
+    for (const userDataContainer of dataItemsArray) {
       container.appendChild(userDataContainer);
     }
 
@@ -174,7 +174,7 @@ export function generateHTML() {
 
   //set the id_input value for the next user to be added
   if (availableId.size > 0) {
-    let arrayFromSet: number[] = [...availableId];
+    const arrayFromSet: number[] = [...availableId];
     id_input.value = arrayFromSet[0].toString();
   } else {
     id_input.value = (current_id_number + 1).toString();
@@ -262,13 +262,13 @@ export function generateHTML() {
   //region function to add a new user to the user data array
   function add_new_user() {
     //get the input field values
-    let id: number = parseInt(id_input.value);
-    let first_name = first_name_input.value;
-    let last_name = last_name_input.value;
+    const id: number = parseInt(id_input.value);
+    const first_name = first_name_input.value;
+    const last_name = last_name_input.value;
 
     //check that both name fields are not empty before adding the new user
     if (first_name != "" && last_name != "") {
-      let new_user: UserName = {
+      const new_user: UserName = {
         id: id,
         firstName: first_name,
         lastName: last_name,
@@ -278,7 +278,8 @@ export function generateHTML() {
 
       lastUserAddedIndex = id;
 
-      let updatedIdArray: number[] = Html_Utils.removeUserIdFromSavedIdData(id);
+      const updatedIdArray: number[] =
+        Html_Utils.removeUserIdFromSavedIdData(id);
 
       //clear the input fields for the next user to be added
       first_name_input.value = "";
@@ -302,7 +303,8 @@ export function generateHTML() {
 
   //region function to remove a user from the user data array
   function removeUser(userToBeRemoved: UserName) {
-    let availIdTempStr: string | null = localStorage.getItem("availableIdData");
+    const availIdTempStr: string | null =
+      localStorage.getItem("availableIdData");
 
     let availIdArrayTemp: number[] = [];
 

@@ -1,23 +1,19 @@
+// @ts-check
+import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 
-export default [
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     files: ["src/**/*.ts", "src/**/*.tsx"],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        sourceType: "module",
-        ecmaVersion: "latest",
-        project: ["./tsconfig.json"],
-      },
-    },
-    plugins: {
-      "@typescript-eslint": tseslint.plugin,
-    },
     rules: {
       // Add your rules here
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-unused-vars": "warn",
     },
   },
-];
+  {
+    ignores: ["dist/", "**/*.js"],
+  },
+);

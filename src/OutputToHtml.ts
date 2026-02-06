@@ -7,7 +7,10 @@ export function generateHTML() {
   let availableId = new Set<number>();
   let userDataArray: UserName[] = [];
 
-  const { _userData, _availableId } = Html_Utils.setUserData(userDataArray, availableId);
+  const { _userData, _availableId } = Html_Utils.setUserData(
+    userDataArray,
+    availableId,
+  );
   availableId = _availableId;
   userDataArray = _userData;
 
@@ -59,7 +62,12 @@ export function generateHTML() {
 
       //added the data divs to an array. Iterate over the array to add a margin bottom to each
       //and highlight the last added user with a yellow background colour
-      const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
+      const data_divs = [
+        id_div,
+        first_name_div,
+        last_name_div,
+        remove_button_div,
+      ];
 
       for (let data_div of data_divs) {
         // data_div.style.marginBottom = "5px";
@@ -92,8 +100,12 @@ export function generateHTML() {
 
       //interpolation is used here to create text nodes including the user object data items
       let id_text = document.createTextNode(`Id:  ${user.id}`);
-      let first_name_text = document.createTextNode(`First name:  ${user.firstName}`);
-      let last_name_text = document.createTextNode(`Last name:  ${user.lastName}`);
+      let first_name_text = document.createTextNode(
+        `First name:  ${user.firstName}`,
+      );
+      let last_name_text = document.createTextNode(
+        `Last name:  ${user.lastName}`,
+      );
 
       //the text nodes are then added into the container divs
       id_div.appendChild(id_text);

@@ -10,7 +10,7 @@ export function outputUserData(): void {
   // the for loop iterates over the array of user names and uses interpolation to output the details of each user
   console.log("For of loop");
   console.log();
-  for (let name of userDataArray) {
+  for (const name of userDataArray) {
     console.log(`id: ${name.id}`);
     console.log(`firstName: ${name.firstName}`);
     console.log(`lastName: ${name.lastName}`);
@@ -21,7 +21,9 @@ export function outputUserData(): void {
   console.log();
   //user a foreach method on the getData() method and an arrow function to iterate over the user name array
   userDataArray.forEach((user) => {
-    console.log(`id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`);
+    console.log(
+      `id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`,
+    );
   });
   console.log();
 

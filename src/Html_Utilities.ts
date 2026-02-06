@@ -41,7 +41,7 @@ function initUserDataDiv(GLOBAL_HTML_ELEMENTS: GLOBAL_HTML_Elements) {
     remove_button_container,
   ];
 
-  for (let container of data_containers) {
+  for (const container of data_containers) {
     container.style.display = "flex";
     container.style.flexDirection = "column";
     container.style.justifyContent = "space-between";
@@ -73,10 +73,11 @@ function highestIdNumberInUserArray(userDataArray: UserName[]): number {
 }
 
 function setAvailableId(availableId: Set<number>): Set<number> {
-  let availableIdJsonString: string | null = localStorage.getItem("availableIdData");
+  const availableIdJsonString: string | null =
+    localStorage.getItem("availableIdData");
 
   if (availableIdJsonString !== null) {
-    let availableIdTemp = JSON.parse(availableIdJsonString) as number[];
+    const availableIdTemp = JSON.parse(availableIdJsonString) as number[];
 
     console.log(`availableId: ${JSON.stringify(availableIdTemp)}`);
 
@@ -95,10 +96,11 @@ function setUserData(
   _userData: UserName[];
   _availableId: Set<number>;
 } {
-  let userDataJsonString: string | null = localStorage.getItem("savedUserData");
+  const userDataJsonString: string | null =
+    localStorage.getItem("savedUserData");
 
   if (userDataJsonString !== null) {
-    let userDataArrayTemp = JSON.parse(userDataJsonString) as UserName[];
+    const userDataArrayTemp = JSON.parse(userDataJsonString) as UserName[];
 
     if (userDataArrayTemp.length > 0) {
       userDataArray = JSON.parse(userDataJsonString) as UserName[];
@@ -119,12 +121,12 @@ function setUserData(
 }
 
 function checkSavedAvailableIdData(): void {
-  let availIdStr = localStorage.getItem("availableIdData");
+  const availIdStr = localStorage.getItem("availableIdData");
 
   let availIdNumSet = new Set<number>();
 
   if (availIdStr != null) {
-    let numArray = JSON.parse(availIdStr) as number[];
+    const numArray = JSON.parse(availIdStr) as number[];
 
     if (numArray.length > 0) availIdNumSet = new Set([...numArray]);
   }
@@ -135,7 +137,7 @@ function checkSavedAvailableIdData(): void {
 function removeUserIdFromSavedIdData(id: number): number[] {
   //update the array of available user id number
   let idArray: number[] = [];
-  let idArrayStr = localStorage.getItem("availableIdData");
+  const idArrayStr = localStorage.getItem("availableIdData");
 
   if (idArrayStr != null) {
     idArray = JSON.parse(idArrayStr) as number[];
@@ -156,7 +158,10 @@ function removeUserIdFromSavedIdData(id: number): number[] {
   return idArray;
 }
 
-function saveNewUserToLocalStorage(user: UserName, userDataArray: UserName[]): void {
+function saveNewUserToLocalStorage(
+  user: UserName,
+  userDataArray: UserName[],
+): void {
   userDataArray.push(user);
 
   userDataArray.sort((a, b) => a.id - b.id);

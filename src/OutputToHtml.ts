@@ -201,7 +201,6 @@ export function generateHTML() {
   first_name_input.setAttribute("type", "string");
   first_name_input.id = "first_name_input_id";
   first_name_input.style.width = "50%";
-  first_name_input.id = "first_name";
 
   const first_name_div = document.createElement("div");
   first_name_div.style.display = "flex";

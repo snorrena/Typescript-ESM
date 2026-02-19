@@ -19,7 +19,7 @@
     "serverRun": "live-server",
     "runObfuscated": "cd obfuscated && live-server",
     "server": "pnpm run typecheck && pnpm run rmdir -- dist && pnpm run esbuild && pnpm run importPathUpdate && pnpm run serverRun",
-    "rmdir": "node -e \"var fs = require('fs'); try{process.argv.slice(1).map((fpath) => fs.rmdirSync(fpath, { recursive: true }))}catch(err){console.log(`Dist not found`)}; process.exit(0);\""
+    "rmdir": "node removeDistFolder.js"
   },
   "author": "",
   "license": "ISC",

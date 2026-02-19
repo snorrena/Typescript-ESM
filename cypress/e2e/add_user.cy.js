@@ -1,121 +1,90 @@
-describe('Add user form', () => {
-    it('fills out the form and submits it', () => {
+describe("Add user form", () => {
+  it("fills out the form and submits it", () => {
+    cy.viewport(window.screen.width, window.screen.height);
 
-        cy.viewport(window.screen.width, window.screen.height);
+    // Open the page
+    cy.visit("index.html");
 
-        // Open the page
-        cy.visit('index.html');
+    cy.wait(2000);
 
-        cy.wait(5000);
+    // Populate the first name field
+    cy.get("#first_name_input_id").should("be.visible").type("Jack");
 
-        // Populate the first name field
-        cy.get('#first_name')
-            .should('be.visible')
-            .type('Jack');
+    // Populate the last name field
+    cy.get("#last_name_input_id").should("be.visible").type("Black");
 
-        // Populate the last name field
-        cy.get('#last_name')
-            .should('be.visible')
-            .type('Black');
+    cy.wait(2000);
 
-        cy.wait(1000);
+    // Click the Add User button
+    cy.get("#add_user").should("be.enabled").click();
 
-        // Click the Add User button
-        cy.get('#add_user')
-            .should('be.enabled')
-            .click();
+    cy.wait(3000);
 
-        // Populate the first name field
-        cy.get('#first_name')
-            .should('be.visible')
-            .type('Dianne');
+    // Populate the first name field
+    cy.get("#first_name_input_id").should("be.visible").type("Dianne");
 
-        // Populate the last name field
-        cy.get('#last_name')
-            .should('be.visible')
-            .type('Keaton');
+    // Populate the last name field
+    cy.get("#last_name_input_id").should("be.visible").type("Keaton");
 
-        cy.wait(2000);
+    cy.wait(2000);
 
-        // Click the Add User button
-        cy.get('#add_user')
-            .should('be.enabled')
-            .click();
+    // Click the Add User button
+    cy.get("#add_user").should("be.enabled").click();
 
-        // Populate the first name field
-        cy.get('#first_name')
-            .should('be.visible')
-            .type('Claudia');
+    cy.wait(3000);
 
-        // Populate the last name field
-        cy.get('#last_name')
-            .should('be.visible')
-            .type('Black');
+    // Populate the first name field
+    cy.get("#first_name_input_id").should("be.visible").type("Claudia");
 
-        cy.get('#2')
-            .should('be.visible')
-            .click();
+    // Populate the last name field
+    cy.get("#last_name_input_id").should("be.visible").type("Black");
 
-        cy.wait(2000);
+    cy.wait(2000);
 
-        // Click the Add User button
-        cy.get('#add_user')
-            .should('be.enabled')
-            .click();
+    // Click the Add User button
+    cy.get("#add_user").should("be.enabled").click();
 
-        cy.wait(2000);
+    cy.wait(3000);
 
-        // Populate the first name field
-        cy.get('#first_name')
-            .should('be.visible')
-            .type('Betty');
+    cy.get("#2").should("be.visible").click();
 
-        // Populate the last name field
-        cy.get('#last_name')
-            .should('be.visible')
-            .type('Boop');
+    cy.wait(3000);
 
-        cy.wait(2000);
+    // Populate the first name field
+    cy.get("#first_name_input_id").should("be.visible").type("Betty");
 
-        // Click the Add User button
-        cy.get('#add_user')
-            .should('be.enabled')
-            .click();
+    // Populate the last name field
+    cy.get("#last_name_input_id").should("be.visible").type("Boop");
 
-        // Populate the first name field
-        cy.get('#first_name')
-            .should('be.visible')
-            .type('Bill');
+    cy.wait(2000);
 
-        // Populate the last name field
-        cy.get('#last_name')
-            .should('be.visible')
-            .type('Goat');
+    // Click the Add User button
+    cy.get("#add_user").should("be.enabled").click();
 
-        cy.wait(2000);
+    cy.wait(3000);
 
-        // Click the Add User button
-        cy.get('#add_user')
-            .should('be.enabled')
-            .click();
+    // Populate the first name field
+    cy.get("#first_name_input_id").should("be.visible").type("Bill");
 
-        cy.wait(2000);
+    // Populate the last name field
+    cy.get("#last_name_input_id").should("be.visible").type("Goat");
 
-        cy.get('#1')
-            .should('be.visible')
-            .click();
+    cy.wait(2000);
+    //
+    // Click the Add User button
+    cy.get("#add_user").should("be.enabled").click();
 
-        cy.wait(2000);
+    cy.wait(3000);
 
-        cy.get('#2')
-            .should('be.visible')
-            .click();
+    cy.get("#1").should("be.visible").click();
 
-        cy.wait(2000);
+    cy.wait(2000);
 
-        cy.get('#4')
-            .should('be.visible')
-            .click();
+    cy.get("#2").should("be.visible").click();
 
-    });
+    cy.wait(2000);
+
+    cy.get("#3").should("be.visible").click();
+  });
 });
+

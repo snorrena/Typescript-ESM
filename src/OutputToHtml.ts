@@ -2,8 +2,8 @@ import type { UserName } from "./Types.ts";
 import type { GLOBAL_HTML_Elements } from "./Types.ts";
 import Html_Utils from "./Html_Utilities.ts";
 
+//region initialization of variables and html elements in the user data div
 export function generateHTML() {
-  //region initialization of variables and html elements in the user data div
   let availableId = new Set<number>();
   let userDataArray: UserName[] = [];
 

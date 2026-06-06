@@ -1,6 +1,7 @@
 import type { UserName, GLOBAL_HTML_Elements } from "./Types.ts";
 import getData from "./Data.ts";
 
+//region function to initialize all html elements in the user data div
 function initUserDataDiv(GLOBAL_HTML_ELEMENTS: GLOBAL_HTML_Elements) {
   const {
     _body: body,
@@ -47,7 +48,9 @@ function initUserDataDiv(GLOBAL_HTML_ELEMENTS: GLOBAL_HTML_Elements) {
     container.style.justifyContent = "space-between";
   }
 }
+//endregion
 
+//region function to sort the array of available user id numbers
 function sortAvailableIdAscending(availableId: Set<number>) {
   if (availableId.size > 1) {
     const sortedNumberSet: number[] = Array.from(availableId);
@@ -61,17 +64,23 @@ function sortAvailableIdAscending(availableId: Set<number>) {
     });
   }
 }
+//endregion
 
+//region function to reset the cursor focus after add of a new user
 function setCursorFocus() {
   document.getElementById("first_name_input_id")?.focus();
 }
+//endregion
 
+//region function to return the highest id number in the user data array
 function highestIdNumberInUserArray(userDataArray: UserName[]): number {
   userDataArray.sort((a, b) => a.id - b.id);
 
   return userDataArray[userDataArray.length - 1].id;
 }
+//endregion
 
+//region function to return the set of available user id number from local storage
 function setAvailableId(availableId: Set<number>): Set<number> {
   const availableIdJsonString: string | null =
     localStorage.getItem("availableIdData");
@@ -88,7 +97,9 @@ function setAvailableId(availableId: Set<number>): Set<number> {
 
   return availableId;
 }
+//endregion
 
+//region returns the user data array and the set of available user id numbers from local storage if they exist.
 function setUserData(
   userDataArray: UserName[],
   availableId: Set<number>,
@@ -119,7 +130,9 @@ function setUserData(
 
   return { _userData: userDataArray, _availableId: availableId };
 }
+//endregion
 
+//region function to output the set of available user id numbers from local storage to the console for testing purposes
 function checkSavedAvailableIdData(): void {
   const availIdStr = localStorage.getItem("availableIdData");
 
@@ -133,7 +146,9 @@ function checkSavedAvailableIdData(): void {
 
   console.log(`deleted index #s available for reuse: ${[...availIdNumSet]}`);
 }
+//endregion
 
+//region function to remove a user
 function removeUserIdFromSavedIdData(id: number): number[] {
   //update the array of available user id number
   let idArray: number[] = [];
@@ -157,7 +172,9 @@ function removeUserIdFromSavedIdData(id: number): number[] {
 
   return idArray;
 }
+//endregion
 
+//region function to save a new user
 function saveNewUserToLocalStorage(
   user: UserName,
   userDataArray: UserName[],
@@ -169,7 +186,9 @@ function saveNewUserToLocalStorage(
   localStorage.removeItem("savedUserData");
   localStorage.setItem("savedUserData", JSON.stringify(userDataArray));
 }
+//endregion
 
+//region export of all html utility function
 const Html_Utils = {
   sortAvailableIdAscending,
   setCursorFocus,
@@ -182,3 +201,4 @@ const Html_Utils = {
 };
 
 export default Html_Utils;
+//endregion

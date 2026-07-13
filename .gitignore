@@ -1,6 +1,7 @@
 .idea/
 .vscode/
-dist/
+dist/**/*
 node_modules/
-obfuscated/
+obfuscated/*
+!obfuscated/index.html
 pnpm-workspace.yaml

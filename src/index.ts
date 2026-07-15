@@ -1,6 +1,6 @@
 /**
  * For more details on the index.ts file, see the
- * [view code details](https://github.com/snorrena/Typescript-ESM/tree/main/code-detail/index.ts.md)
+ * [code details](https://github.com/snorrena/Typescript-ESM/tree/main/code-detail/index.ts.md)
  */
 import { outputUserData as displayDataInDevConsole } from "./DisplayData.ts";
 import { generateHTML } from "./OutputToHtml.ts";

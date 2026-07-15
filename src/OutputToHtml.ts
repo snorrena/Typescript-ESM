@@ -1,3 +1,8 @@
+/**
+ * For more details on the OutputToHtml.ts file, see the
+ * [code details](https://github.com/snorrena/Typescript-ESM/tree/main/code-detail/OutputToHtml.ts.md)
+ */
+
 import type { UserName } from "./Types.ts";
 import type { GLOBAL_HTML_Elements } from "./Types.ts";
 import Html_Utils from "./Html_Utilities.ts";
@@ -7,10 +12,7 @@ export function generateHTML() {
   let availableId = new Set<number>();
   let userDataArray: UserName[] = [];
 
-  const { _userData, _availableId } = Html_Utils.setUserData(
-    userDataArray,
-    availableId,
-  );
+  const { _userData, _availableId } = Html_Utils.setUserData(userDataArray, availableId);
   availableId = _availableId;
   userDataArray = _userData;
 
@@ -62,12 +64,7 @@ export function generateHTML() {
 
       //added the data divs to an array. Iterate over the array to add a margin bottom to each
       //and highlight the last added user with a yellow background colour
-      const data_divs = [
-        id_div,
-        first_name_div,
-        last_name_div,
-        remove_button_div,
-      ];
+      const data_divs = [id_div, first_name_div, last_name_div, remove_button_div];
 
       for (const data_div of data_divs) {
         // data_div.style.marginBottom = "5px";
@@ -100,12 +97,8 @@ export function generateHTML() {
 
       //interpolation is used here to create text nodes including the user object data items
       const id_text = document.createTextNode(`Id:  ${user.id}`);
-      const first_name_text = document.createTextNode(
-        `First name:  ${user.firstName}`,
-      );
-      const last_name_text = document.createTextNode(
-        `Last name:  ${user.lastName}`,
-      );
+      const first_name_text = document.createTextNode(`First name:  ${user.firstName}`);
+      const last_name_text = document.createTextNode(`Last name:  ${user.lastName}`);
 
       //the text nodes are then added into the container divs
       id_div.appendChild(id_text);
@@ -276,8 +269,7 @@ export function generateHTML() {
 
       lastUserAddedIndex = id;
 
-      const updatedIdArray: number[] =
-        Html_Utils.removeUserIdFromSavedIdData(id);
+      const updatedIdArray: number[] = Html_Utils.removeUserIdFromSavedIdData(id);
 
       //clear the input fields for the next user to be added
       first_name_input.value = "";
@@ -301,8 +293,7 @@ export function generateHTML() {
 
   //region function to remove a user from the user data array
   function removeUser(userToBeRemoved: UserName) {
-    const availIdTempStr: string | null =
-      localStorage.getItem("availableIdData");
+    const availIdTempStr: string | null = localStorage.getItem("availableIdData");
 
     let availIdArrayTemp: number[] = [];
 

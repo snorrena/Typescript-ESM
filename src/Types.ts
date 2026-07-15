@@ -1,3 +1,8 @@
+/**
+ * For more details on the Types.ts file, see the
+ * [code details](https://github.com/snorrena/Typescript-ESM/tree/main/code-detail/Types.ts.md)
+ */
+
 export type UserName = {
   id: number;
   firstName: string;

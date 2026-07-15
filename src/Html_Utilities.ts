@@ -1,3 +1,8 @@
+/**
+ * For more details on the Html_Utilities.ts file, see the
+ * [code details](https://github.com/snorrena/Typescript-ESM/tree/main/code-detail/Html_Utilities.ts.md)
+ */
+
 import type { UserName, GLOBAL_HTML_Elements } from "./Types.ts";
 import getData from "./Data.ts";
 
@@ -82,8 +87,7 @@ function highestIdNumberInUserArray(userDataArray: UserName[]): number {
 
 //region function to return the set of available user id number from local storage
 function setAvailableId(availableId: Set<number>): Set<number> {
-  const availableIdJsonString: string | null =
-    localStorage.getItem("availableIdData");
+  const availableIdJsonString: string | null = localStorage.getItem("availableIdData");
 
   if (availableIdJsonString !== null) {
     const availableIdTemp = JSON.parse(availableIdJsonString) as number[];
@@ -107,8 +111,7 @@ function setUserData(
   _userData: UserName[];
   _availableId: Set<number>;
 } {
-  const userDataJsonString: string | null =
-    localStorage.getItem("savedUserData");
+  const userDataJsonString: string | null = localStorage.getItem("savedUserData");
 
   if (userDataJsonString !== null) {
     const userDataArrayTemp = JSON.parse(userDataJsonString) as UserName[];
@@ -175,10 +178,7 @@ function removeUserIdFromSavedIdData(id: number): number[] {
 //endregion
 
 //region function to save a new user
-function saveNewUserToLocalStorage(
-  user: UserName,
-  userDataArray: UserName[],
-): void {
+function saveNewUserToLocalStorage(user: UserName, userDataArray: UserName[]): void {
   userDataArray.push(user);
 
   userDataArray.sort((a, b) => a.id - b.id);

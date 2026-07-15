@@ -1,3 +1,8 @@
+/**
+ * For more details on the Data.ts file, see the
+ * [code details](https://github.com/snorrena/Typescript-ESM/tree/main/code-detail/Data.ts.md)
+ */
+
 import type { UserName } from "./Types.ts";
 
 const getData = function (): UserName[] {

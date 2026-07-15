@@ -1,3 +1,8 @@
+/**
+ * For more details on the DisplayData.ts file, see the
+ * [code details](https://github.com/snorrena/Typescript-ESM/tree/main/code-detail/DisplayData.ts.md)
+ */
+
 //import of a default export from Data.ts
 import getData from "./Data.ts";
 //import of a named import from Data.ts
@@ -21,9 +26,7 @@ export function outputUserData(): void {
   console.log();
   //user a foreach method on the getData() method and an arrow function to iterate over the user name array
   userDataArray.forEach((user) => {
-    console.log(
-      `id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`,
-    );
+    console.log(`id:${user.id}, firstName:${user.firstName}, lastName:${user.lastName}`);
   });
   console.log();
 

@@ -1,35 +1,31 @@
-# Data.ts
+This code file, `Data.ts`, functions as a **mock data repository** or utility module that provides hardcoded user records.
 
-The Data.ts file is used to simulate a database back end server api that returns
-an array list of user data objects.
+Here is a detailed summary of its structure and functionality:
 
-The import statement at the top of this file brings in a custom data type named
-'UserName' defined in the Types.ts file.
+### 📝 Summary
 
-Types are key to catching coding errors in Typescript if an incorrect value is
-passed to or returned from a function or set to a variable.
+The primary purpose of `Data.ts` is to define a fixed set of five user objects (Scott Norrena, Tammy Jones, Joe Forte, Sue Me, and Fuc Thaht). It encapsulates this data generation within a function (`getData`) and then makes the resulting array immediately available for consumption throughout the application via an exported constant (`userDataArray`).
 
-The named import { UserName } is indicated by the surrounding curly brackets.
+### 🔍 Key Components
 
-A default import does not included the curly brackets.
-ex. import myfunction from "./path/file.ts"
+#### 1. Data Structure
 
-The keyword 'type' is also used in the import statement to define a type import.
+- **Type:** The code relies on the `UserName` type (imported from `./Types.ts`), ensuring that all user objects conform to a consistent structure: `id` (number), `firstName` (string), and `lastName` (string).
 
-The custom type 'UserName' is used to hold data
-fields for an individual user including first name, last
-name and id number.
+#### 2. The `getData` Function
 
-The function expression named 'getData' initializes seed data of five 'UserName'
-objects.
-The 'UserName' type is used in the function signature to define the shape of the
-function argument and return values.
+- This function is responsible for defining and assembling the data set.
+- It initializes five individual constant variables, each holding one user record.
+- It collects these five records into an array (`userNameArray`) and then returns this populated array.
+- **Role:** It serves as the authoritative source logic for generating the list of users.
 
-Typescript variables may be declared including a type definition if the type is
-not inferred in the declaration.
+#### 3. Exports (Data Availability)
 
-The function expression 'getData' includes a local variable named 'userNameArray'
-declared and initialized as an array of type 'UserName'.
+The file exports the data in two ways:
 
-The 'UserName' objects are pushed onto the array and the array is returned from
-the function.
+1. `export default getData`: Allows other files to call the `getData()` function whenever they need a fresh copy of the user array.
+2. `export const userDataArray: UserName[] = getData();`: **(Most commonly used)** This executes `getData()` immediately when the module loads, making the resulting array instantly accessible by any importing file as a static constant.
+
+### 💡 In essence
+
+This file acts as a central data source, providing five sample user records that can be imported and used anywhere in the application without needing to connect to an external database.

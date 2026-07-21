@@ -1,24 +1,42 @@
 # index.ts
 
-The 'index.ts' file is the entry point of this application. It may be run
-directly with Node, Deno or Bun, but must be compiled into JavaScript in order to
-run in a browser.
+The `index.ts` file is the main entry point of the application. It dynamically
+detects the runtime environment to determine whether to render a user interface
+in a web browser or output user data to the development console.
 
-There are two import statements at the top of the file used to bring in functional
-code.
+The import statements at the top of the file bring in key functions from other modules:
 
-The first statement imports the function 'outputUserData' and renames it as
-'displayDataInDevConsole'. This function will loop through the program data and
-console log user properties to a terminal. The purpose of this code is to demonstrate
-that our program has access to seed user data in a simulated back end database.
+- `outputUserData` (aliased as `displayDataInDevConsole` using the `as` keyword)
+  from `./DisplayData.ts`.
+- `generateHTML` from `./OutputToHtml.ts`.
 
-The second import statement brings in the function
-'generateHTML'. This function will generate all html elements used by our web
-app to display and manage user data in a web browser.
+## Runtime Environment Detection
 
-The 'if else' control flow in this file checks for a window object.
-If the object exists, the execution environment is inside a web browser and
-the 'generateHTML' function is executed to build our web application.
-Otherwise, the runtime environment is in a terminal and the
-'displayDataInDevConsole' function is executed to console log user data
-to the terminal window.
+The file uses an `if` conditional block to check if the global `window` object
+is defined:
+
+```typescript
+if (typeof window === "object") {
+```
+
+Checking if `typeof window === "object"` is a standard way to verify if the code
+is running inside a web browser environment.
+
+## 1. Web Browser Environment
+
+If running in a browser, the following actions are executed:
+
+- The `generateHTML()` function is called to build and render the dynamic HTML interface.
+- It uses optional chaining (`?.`) to safely locate and set focus on the text input element with the ID `first_name_input_id`:
+
+  ```typescript
+  document.getElementById("first_name_input_id")?.focus();
+  ```
+
+## 2. Console/Terminal Environment (Node.js or other non-browser runtime)
+
+If running outside a browser (e.g., in a development terminal or Node.js
+environment), the `else` block is executed:
+
+- It calls `displayDataInDevConsole()`, which outputs the application's user data
+  directly to the developer console or terminal.
